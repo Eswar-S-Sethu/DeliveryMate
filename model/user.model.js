@@ -10,7 +10,20 @@ const User = mongoose.model('user', {
         type:String,
         unique:true
     },
-    password:String
+    password:String,
+    usertype:String,
+    registrationdate:Date,
+    lastlogin:Date,
 });
 
-module.exports =  User
+// for storing requests
+const Requests=mongoose.model('requests',{
+    title:String,
+    description:String,
+    pickuplocation:String,
+    deliverylocation:String,
+    requeststatus:String,
+});
+ 
+
+module.exports =  {User,Requests}

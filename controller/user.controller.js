@@ -1,17 +1,18 @@
 const User = require("../model/user.model")
 const generateAccessToken = require("../utils/generateToken")
-const bcrypt = require("bcrypt")
+const bcrypt = require("bcrypt") // used for encrypting passwords using salting method. 
 
-const postUser = async (req, res, next) => {
-    let userdata = req.body
-    userdata.password = await bcrypt.hash(userdata.password, 10)
+// this is to create a new user. gets the username and password 
+const postUser = async (req, res, next) => { // async allows to use the await in it
+    let userdata = req.body // userdata variable stores the data from the html file as json file.
+    userdata.password = await bcrypt.hash(userdata.password, 10) // waits until the bcrypt encrypts the password
     try {
         const user = new User(userdata)
-        const validationUser = await user.validate()
-        let data = await user.save()
+        const validationUser = await user.validate() // waits till user is validated
+        let data = await user.save() // pauses the execution till the new user data is saved to the database.
 
         if (data) {
-            const token = await generateAccessToken(data._id)
+            const token = await generateAccessToken(data._id) // waits till an access token is generated.
             data = { ...data.toJSON(), token }
             return res.json({ statusCode: 200, data, message: 'success' });
         }
