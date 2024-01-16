@@ -16,6 +16,7 @@ async function sendData() {
             if (result.statusCode === 200) {
                 $("#userinfo").trigger("reset");
                 alert("User registered Succesfully")
+                window.location.replace("http://localhost:3000/");
             }
         }
     });
