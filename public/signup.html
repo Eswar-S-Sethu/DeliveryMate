@@ -8,13 +8,13 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel="stylesheet" type="text/css" href="css/style.css">
+	<link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 
 <body>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<a class="navbar-brand" href="#">
-			<img src="images/logo.png" alt="DeliveryMate Logo" height="30px">
+			<img src="/images/logo.png" alt="DeliveryMate Logo" height="30px">
 		</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
 			aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -43,63 +43,63 @@
 
 	<div class="container">
 		<div class="img">
-			<img src="images/Signup.png">
+			<img src="/images/Signup.png">
 		</div>
 		<!-- Signup Form -->
 		<div class="signup-content">
-			<form action="signup.html">
-				<img src="images/people.png">
+			<form id="userinfo">
+				<img src="/images/people.png">
 
 				<h2 class="title">Sign Up</h2>
 				<div class="input-div">
 					<div class="div">
 						<h5>Last Name</h5>
-						<input type="text" class="input">
+						<input type="text" class="input" id="lastname">
 					</div>
 				</div>
 				<div class="input-div">
 					<div class="div">
 						<h5>First Name</h5>
-						<input type="text" class="input">
+						<input type="text" class="input" id="firstname">
 					</div>
 				</div>
 				<div class="input-div">
 					<div class="div">
 						<h5>Username</h5>
-						<input type="text" class="input">
+						<input type="text" class="input" id="username">
 					</div>
 				</div>
 				<div class="input-div">
 					<div class="div">
 						<h5>Email</h5>
-						<input type="email" class="input">
+						<input type="email" class="input" id="email">
 					</div>
 				</div>
 				<div class="input-div">
 					<div class="div">
 						<h5>Phone Number</h5>
-						<input type="tel" class="input">
+						<input type="tel" class="input" id="phonenumber">
 					</div>
 				</div>
 				<div class="input-div">
 					<div class="div">
 						<h5>Password</h5>
-						<input type="password" class="input">
+						<input type="password" class="input" id="password">
 					</div>
 				</div>
 				<div class="input-div">
 					<div class="div">
 						<h5>Confirm Password</h5>
-						<input type="password" class="input">
+						<input type="password" class="input" id="confirmpassword">
 					</div>
 				</div>
 				<input type="submit" class="btn" value="Sign Up">
-				<p><a class="text-center" style="margin-top: 10px;" href="login.html">Already have an account? Login</a></p>
+				<p><a class="text-center" style="margin-top: 10px;" href="/login">Already have an account? Login</a></p>
 			</form>
 		</div>
 	</div>
-
-	<script type="text/javascript" src="js/script.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	<script type="text/javascript" src="/register/register.js"></script>
 
 </body>
 

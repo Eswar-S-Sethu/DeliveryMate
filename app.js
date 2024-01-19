@@ -12,8 +12,11 @@ app.use(express.static(__dirname+'/public'))
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname + '/public/index.html'));
 })
+app.get('/login', function (req, res) {
+    res.sendFile(path.join(__dirname + '/public/index.html'));
+})
 app.get('/register', (req, res) => {
-    res.sendFile(path.join(__dirname + '/public/register/register.html'));
+    res.sendFile(path.join(__dirname + '/public/signup.html'));
 })
 app.get('/home', (req, res) => {
     res.sendFile(path.join(__dirname + '/public/home/home.html'));
