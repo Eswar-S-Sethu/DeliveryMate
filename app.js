@@ -15,6 +15,9 @@ app.get('/', function (req, res) {
 app.get('/register', (req, res) => {
     res.sendFile(path.join(__dirname + '/public/register/register.html'));
 })
+app.get('/home', (req, res) => {
+    res.sendFile(path.join(__dirname + '/public/home/home.html'));
+})
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 

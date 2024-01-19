@@ -15,6 +15,7 @@ async function sendData() {
             if (result.statusCode === 200) {
                 $("#logininfo").trigger("reset");
                 alert("Logged in Succesfully")
+                window.location.replace("http://localhost:3000/home/");
             }
         }
     });
