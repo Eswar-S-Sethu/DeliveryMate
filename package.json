@@ -22,9 +22,13 @@
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",
+<<<<<<< HEAD
     "mongoose": "^8.0.4"
   },
   "devDependencies": {
+=======
+    "mongoose": "^8.0.4",
+>>>>>>> f6a4d413a32b34563cdb093ada0eab2a3caba730
     "nodemon": "^3.0.2"
   }
 }

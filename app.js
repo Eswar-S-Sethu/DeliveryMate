@@ -7,7 +7,11 @@ const port = 3000 | process.env.port
 
 //database connection
 require('./utils/dbConnection')
+<<<<<<< HEAD
 app.use(express.static(__dirname + '/public'))
+=======
+app.use(express.static(__dirname+'/public'))
+>>>>>>> f6a4d413a32b34563cdb093ada0eab2a3caba730
 //frontend routes
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname + '/public/index.html'));
@@ -21,6 +25,7 @@ app.get('/home', (req, res) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+<<<<<<< HEAD
 app.get('/request-management', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', '/requestManagement/requestManagement.html'));
 });
@@ -29,6 +34,8 @@ app.get('/account-management', (req, res) => {
 });
 
 
+=======
+>>>>>>> f6a4d413a32b34563cdb093ada0eab2a3caba730
 //backend routes
 app.use('/api/user', userRoutes)
 
