@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Management</title>
+    <!-- Bootstrap CSS CDN -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+   
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #4caf50; display: flex; justify-content: space-between;">
+    <div class="container">
+        <a class="navbar-brand" href="#">DeliveryMate</a>
+        <div class="navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#" class="current">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">New Request</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/request-management">Request Management</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/account-management">Account Management</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Sign Out</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Account Management Card -->
+<div class="container mt-4">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="mb-0">Account Management</h3>
+        </div>
+        <div class="card-body">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" class="form-control" value="John Doe" readonly>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" class="form-control" value="john.doe@example.com" readonly>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone:</label>
+                <input type="tel" id="phone" class="form-control" value="123-456-7890" readonly>
+            </div>
+            <div class="form-group">
+                <label for="region">Region:</label>
+                <input type="text" id="region" class="form-control" value="Cityville" readonly>
+            </div>
+            <button class="btn btn-success ml-auto" data-toggle="modal" data-target="#editModal">Edit</button>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Modal -->
+<div class="modal" id="editModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Edit Account Details</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="editName">Name:</label>
+                    <input type="text" id="editName" class="form-control" value="John Doe">
+                </div>
+                <div class="form-group">
+                    <label for="editEmail">Email:</label>
+                    <input type="email" id="editEmail" class="form-control" value="john.doe@example.com">
+                </div>
+                <div class="form-group">
+                    <label for="editPhone">Phone:</label>
+                    <input type="tel" id="editPhone" class="form-control" value="123-456-7890">
+                </div>
+                <div class="form-group">
+                    <label for="editRegion">Region:</label>
+                    <input type="text" id="editRegion" class="form-control" value="Cityville">
+                </div>
+                <button class="btn btn-success" onclick="saveChanges()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS and Popper.js CDN -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<script>
+    function saveChanges() {
+        // Add logic for saving changes
+        alert("Changes saved!");
+    }
+</script>
+
+</body>
+</html>
