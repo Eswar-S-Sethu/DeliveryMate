@@ -24,35 +24,6 @@ app.use('/api/user', userRoutes)
 //error handling
 app.use(logErrors)
 app.use(errorHandler)
-// ------------------------------------------------------------------------------------
-// socket setup
-// we get the userID and receiverID from the database, will implement that part soon
-let users = {};  // is an object that maps userIds to their socket IDs.
-
-io.on('connection', (socket) => {  // listens for new socket connections.
-    console.log('A user connected');
-
-    socket.on('register', userId => {  // handles user registration by storing their socket ID.
-        users[userId] = socket.id;
-    });
-
-    socket.on('send_message', ({ senderId, receiverId, message }) => { //  handles sending messages from one user to another.
-        if (users[receiverId]) {
-            io.to(users[receiverId]).emit('new_message', { senderId, message });
-        }
-    });
-
-    socket.on('disconnect', () => {   //  removes the user's socket ID upon disconnection.
-        console.log('User disconnected');
-        for (let userId in users) {
-            if (users[userId] === socket.id) {
-                delete users[userId];
-                break;
-            }
-        }
-    });
-});
-// ----------------------------------------------------------------------------------------
 
 app.listen(port, () => {
     console.log(`litening st ${port}`)
