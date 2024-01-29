@@ -1,3 +1,5 @@
+const socket=io();
+
 document.addEventListener("DOMContentLoaded", function () {
     let inp = document.getElementById("inp");  // Input element
     let message = document.getElementById("message");  // Message container
@@ -46,10 +48,31 @@ document.addEventListener("DOMContentLoaded", function () {
         messageNode.appendChild(textNode);
 
         message.appendChild(messageNode);
+        socket.emit('chatMessage',val);
         inp.value = "";
 
         // Scroll to the bottom of the container
-        main.scrollTop = main.scrollHeight - main.clientHeight;
+        socket.on('chatMessage', (msg) => {
+            appendMessage(msg);
+            // Scroll to the bottom of the container
+            main.scrollTop = main.scrollHeight - main.clientHeight;
+        });
+        socket.on('chatMessage', (msg) => {
+            appendMessage(msg);
+            // Emit read receipt
+            socket.emit('messageRead', msg);
+            // Scroll to the bottom
+            main.scrollTop = main.scrollHeight - main.clientHeight;
+        });
+    }
+    function appendMessage(message) {
+        let currentTime = getCurrentTime();
+        let messageNode = document.createElement("li");
+        messageNode.classList.add("text-right");
+        let textNode = document.createElement("span");
+        textNode.textContent = message;
+        messageNode.appendChild(textNode);
+        message.appendChild(messageNode);
     }
 
     function getCurrentTime() {
@@ -63,7 +86,10 @@ document.addEventListener("DOMContentLoaded", function () {
         let currentTime = `${hours}:${minutes}${ampm}`;
         return currentTime;
     }
+    
 });
+
+
 
 
 //this part with click dunction
