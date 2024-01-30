@@ -44,9 +44,14 @@ async function sendData() {
         success: (result) => {
             if (result.statusCode === 200) {
                 $("#logininfo").trigger("reset");
-                alert("Logged in Succesfully")
+                // alert("Logged in Succesfully")
+                toastr.success("Logged in Successfully");
                 window.location.replace("http://localhost:3000/home/");
             }
+        },
+        error: (error) => {
+            console.error("Error in AJAX request:", error);
+            toastr.error(error.responseJSON['error']);
         }
     });
 }
