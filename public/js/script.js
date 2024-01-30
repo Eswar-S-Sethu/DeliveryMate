@@ -46,6 +46,8 @@ async function sendData() {
                 $("#logininfo").trigger("reset");
                 // alert("Logged in Succesfully")
                 toastr.success("Logged in Successfully");
+                console.log(result)
+                localStorage.setItem('token',result.data.token)
                 window.location.replace("http://localhost:3000/home/");
             }
         },
@@ -58,7 +60,6 @@ async function sendData() {
 
 // Take over form submission
 form.addEventListener("submit", (event) => {
-debugger
     event.preventDefault();
     sendData();
 });
@@ -90,35 +91,8 @@ function uploadImage() {
 }
 
 
-// Function called when the form is submitted
-function submit() {
-    var itemName = document.getElementById('inputName').value;
-    var itemWeight = document.getElementById('inputWeight').value;
-    var itemSize = document.getElementById('inputSize').value;
-    var itemDestination = document.getElementById('inputDestination').value;
-    var itemPickup = document.getElementById('inputpickup').value;
-    var itemTips = document.getElementById('inputtips').value;
-    var itemNotes = document.getElementById('inputnotes').value;
 
-    // Get the current time
-    var currentTime = new Date();
-    // Format the time using toLocaleString to get the local date and time format
-    var formattedTime = currentTime.toLocaleString();  
 
-    // Display the submission time on the page
-    displaySubmissionTime(formattedTime);
-
-    // pop
-    alert('Request submitted successfully!');
-}
-
-// display submission time on the page
-function displaySubmissionTime(time) {
-    var timeDisplay = document.getElementById('submissionTimeDisplay');
-    if (timeDisplay) {
-        timeDisplay.textContent = 'Form submitted successfully at ' + time;
-    }
-}
 
 //create requests page end~~~~~~~~~~~~~~~~~~~~~~~~~
 
