@@ -1,6 +1,8 @@
 const express = require('express')
 const { logErrors, errorHandler } = require('./utils/errorHandler.js')
-let userRoutes = require('./routes/user.routes.js');
+const userRoutes = require('./routes/user.routes.js');
+const deliveryRoutes = require('./routes/deliveryRequest.routes.js');
+const authenticateToken = require('./utils/authenticateToken.js')
 const path = require('path');
 const app = express()
 const port = 3000 | process.env.port
@@ -19,13 +21,17 @@ app.get('/register', (req, res) => {
     res.sendFile(path.join(__dirname + '/public/signup.html'));
 })
 app.get('/home', (req, res) => {
-    res.sendFile(path.join(__dirname + '/public/home/home.html'));
+    res.sendFile(path.join(__dirname + '/public/requestboard.html'));
+})
+app.get('/new-request', (req, res) => {
+    res.sendFile(path.join(__dirname + '/public/createrequest.html'));
 })
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 //backend routes
 app.use('/api/user', userRoutes)
+app.use('/api/delivery', authenticateToken,deliveryRoutes)
 
 //error handling
 app.use(logErrors)
