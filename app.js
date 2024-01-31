@@ -10,6 +10,8 @@ const port = 3000 | process.env.port
 //database connection
 require('./utils/dbConnection')
 app.use(express.static(__dirname+'/public'))
+app.use('/uploads', express.static(__dirname + '/uploads')); // Serve images from the uploads directory
+
 //frontend routes
 app.get('/', function (req, res) {
     res.sendFile(path.join(__dirname + '/public/index.html'));

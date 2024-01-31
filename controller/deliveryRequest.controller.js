@@ -14,6 +14,7 @@ const submitRequest = async (req, res, next) => {
         } = req.body;
 
         const itemImage = req.file ? 'uploads/' + req.file.filename : '';
+        const userId = req.user.id;
 
         const newDeliveryRequest = new DeliveryRequest({
             itemName,
@@ -24,6 +25,7 @@ const submitRequest = async (req, res, next) => {
             itemTips,
             itemNotes,
             itemImage,
+            userId
         });
 
         await newDeliveryRequest.save();
@@ -43,4 +45,15 @@ getAllRequests = async (req, res,next) => {
       next(error)
     }
   };
-module.exports = { submitRequest,getAllRequests };
+  // Controller function to get all delivery requests by user ID
+const getAllRequestsByUserId = async (req, res, next) => {
+  try {
+    const userId = req.params.userId; // Assuming you are passing the userId as a parameter
+    const requests = await DeliveryRequest.find({ userId });
+    res.json({ requests });
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+};
+module.exports = { submitRequest,getAllRequests,getAllRequestsByUserId };
