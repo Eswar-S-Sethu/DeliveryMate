@@ -94,45 +94,7 @@ function uploadImage() {
 
 
 
-//create requests page end~~~~~~~~~~~~~~~~~~~~~~~~~
 
-
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~requestboard.html~~~~~~~~~~~~~~~~~~~~~~~~~
-
-// Reference to the card container
-var cardContainer = document.getElementById("cardContainer");
-
-// Loop through the cardsData array and generate cards
-cardsData.forEach(function (cardData) {
-    // Create card element
-    var cardElement = document.createElement("div");
-    cardElement.classList.add("col-md-3");
-    cardElement.innerHTML = `
-                <div class="card h-100">
-                    <img src="${cardData.imgSrc}" alt="request" class="image">
-                    <div class="card-body">
-                        <ul style="list-style-type:none; text-align:left; padding: 0;">
-                            <li><strong>Item Name:</strong>${cardData.itemName}</li>
-                            <li><strong>Weight:</strong>${cardData.weight}</li>
-                            <li><strong>Size:</strong>${cardData.size}</li>
-                            <li><strong>Destination:</strong>${cardData.destination}</li>
-                            <li><strong>Pick-Up Point:</strong>${cardData.pickUpPoint}</li>
-                            <li><strong>Tips:</strong>${cardData.tips}</li>
-                            <li><strong>Notes:</strong>${cardData.notes}</li>
-                        </ul>
-                    </div>
-                  
-                    <div class="d-flex justify-content-center align-items-center">
-                        <button type="submit" class="btn">Accept request</button>
-                    </div>
-                </div>
-          
-            `;
-    // Append card to the card container
-    cardContainer.appendChild(cardElement);
-});
-
-//requestboard.html end~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 
