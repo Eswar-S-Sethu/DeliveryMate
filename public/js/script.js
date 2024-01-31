@@ -120,6 +120,13 @@ function displaySubmissionTime(time) {
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~requestboard.html~~~~~~~~~~~~~~~~~~~~~~~~~
 
+var cardsData = [
+    { imgSrc: "image1.jpg", itemName: "Book", weight: "0.3kg", size: "small", destination: "City", pickUpPoint: "7-11 box hill", tips: "5", notes: "14:00" },
+    { imgSrc: "image5.jpg", itemName: "hang cream", weight: "0.3kg", size: "small", destination: "burwood", pickUpPoint: "No.23 tram station", tips: "5", notes: "11:00-12:00" },
+    { imgSrc: "image3.jpg", itemName: "Special tote bag", weight: "500g", size: "small", destination: "box hill", pickUpPoint: "Deakin swimming pool ", tips: "5", notes: "13:00-17:00" },
+    { imgSrc: "image4.jpg", itemName: "Handmade cookies", weight: "1kg", size: "medium", destination: "Chemist warehouse Ivanhoe", pickUpPoint: "Chemist warehouse burwood", tips: "3", notes: "Notes" },
+]
+
 // Reference to the card container
 var cardContainer = document.getElementById("cardContainer");
 
@@ -157,7 +164,7 @@ cardsData.forEach(function (cardData) {
 
 
 
-//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~reate requests page~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~create requests page~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 async function uploadImage() {
     //eventual completion or failure of an asynchronous operation and its resulting value.
     return new Promise((resolve, reject) => {  
