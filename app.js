@@ -31,6 +31,14 @@ app.get('/new-request', (req, res) => {
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+app.get('/request-management', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', '/requestManagement/requestManagement.html'));
+});
+app.get('/account-management', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', '/accountManagement/accountManagement.html'));
+});
+
+
 //backend routes
 app.use('/api/user', userRoutes)
 app.use('/api/delivery', authenticateToken,deliveryRoutes)
