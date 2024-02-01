@@ -7,6 +7,7 @@
     <title>Request Management</title>
     <!-- Bootstrap CSS CDN -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <style>
         body {
             overflow-x: hidden;
@@ -24,8 +25,15 @@
             <a class="navbar-brand" href="#">DeliveryMate</a>
             <div class="navbar-collapse">
                 <ul class="navbar-nav ml-auto">
+                    <!-- Notification icon added here -->
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#" class="current">
+                            <i class="fas fa-bell"></i> <!-- Font Awesome bell icon -->
+                        </a>
+                    </li>
+                    <!-- Other navbar items -->
                     <li class="nav-item">
-                        <a class="nav-link" href="#" class="current">Home</a>
+                        <a class="nav-link" href="#">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">New Request</a>
@@ -43,6 +51,7 @@
             </div>
         </div>
     </nav>
+
 
     <!-- Request Management Cards -->
     <div class="container mt-4" id="requestContainer">
