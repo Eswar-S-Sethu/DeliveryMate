@@ -43,7 +43,7 @@ const deliveryRequestSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
-});
+}, { timestamps: true });
 
 const DeliveryRequest = mongoose.model('DeliveryRequest', deliveryRequestSchema);
 

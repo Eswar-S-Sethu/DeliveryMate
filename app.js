@@ -2,6 +2,7 @@ const express = require('express')
 const { logErrors, errorHandler } = require('./utils/errorHandler.js')
 const userRoutes = require('./routes/user.routes.js');
 const deliveryRoutes = require('./routes/deliveryRequest.routes.js');
+const acceptedRequest = require('./routes/acceptedRequest.routes.js');
 const authenticateToken = require('./utils/authenticateToken.js')
 const path = require('path');
 const app = express()
@@ -67,6 +68,7 @@ app.get('/account-management', (req, res) => {
 //backend routes
 app.use('/api/user', userRoutes)
 app.use('/api/delivery', authenticateToken,deliveryRoutes)
+app.use('/api/accepet', authenticateToken,acceptedRequest)
 
 //error handling
 app.use(logErrors)
