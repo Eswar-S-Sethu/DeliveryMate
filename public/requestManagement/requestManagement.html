@@ -20,7 +20,7 @@
 
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top"
-        style="background-color: #4caf50; display: flex; justify-content: space-between; margin-bottom: 20px;">
+        style="background-image: linear-gradient(to right, #BBFFBB, #a8d46f, #32be8f); display: flex; justify-content: space-between; margin-bottom: 20px;">
         <div class="container">
             <a class="navbar-brand" href="#">DeliveryMate</a>
             <div class="navbar-collapse">
@@ -122,9 +122,9 @@
                             <p class="card-text">Notes: ${request.notes}</p>
                             <p class="card-text">Tips: ${request.tips}</p>
                             <div class="d-flex">
-                                <button class="btn btn-success me-2" data-toggle="modal" data-target="#editModal${request.id}">Edit</button>
-                                <button onclick="deleteRequest(${request.id})" class="btn btn-danger">Delete</button>
-                            </div>
+                    <button class="btn btn-success me-2" data-toggle="modal" data-target="#editModal${request.id}">Edit</button>
+                    <button onclick="deleteRequest(${request.id})" class="btn btn-danger">Delete</button>
+                </div>
                         </div>
                     </div>
                 </div>
@@ -137,6 +137,32 @@
                 // Create corresponding edit modal
                 createEditModal(request);
             });
+            const style = document.createElement('style');
+            style.innerHTML = `
+    .btn {
+        display: block;
+        width: 100%;
+        height: 50px;
+        border-radius: 25px;
+        outline: none;
+        border: none;
+        background-image: linear-gradient(to right, #BBFFBB, #a8d46f, #32be8f);
+        background-size: 200%;
+        font-size: 1.2rem;
+        color: #fff;
+        font-family: 'Poppins', sans-serif;
+        text-transform: uppercase;
+        margin: 1rem 0;
+        cursor: pointer;
+        transition: .5s;
+    }
+
+    .btn:hover {
+        background-position: right;
+    }
+`;
+
+            document.head.appendChild(style);
         }
 
         // Function to create edit modal for each request
