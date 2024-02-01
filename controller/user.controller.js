@@ -35,7 +35,7 @@ const loginUser = async (req, res, next) => {
                 })
             }
             next('Wrong Credentials')
-        }else{
+        } else {
             next('No such user')
         }
     } catch (err) {
@@ -55,4 +55,16 @@ const getUsers = async (req, res, next) => {
     }
 }
 
-module.exports = { postUser, getUsers, loginUser }
+const getCurrentUser = async (req, res, next) => {
+    try {
+        let data = await User.findById(req.user.id)
+        if (data) {
+            return res.json({ statusCode: 200, data, message: 'success' });
+        }
+    }
+    catch (err) {
+        next(err)
+    }
+}
+
+module.exports = { postUser, getUsers, loginUser ,getCurrentUser}

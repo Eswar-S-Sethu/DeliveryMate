@@ -1,4 +1,3 @@
-
 // lock navbar
 $(document).scroll(function () {
     if ($(this).scrollTop() > 550) {
@@ -29,51 +28,55 @@ inputs.forEach(input => {
 	input.addEventListener("blur", remcl);
 });
 
-const form = document.querySelector("#userinfo");
+const form = document.querySelector("#logininfo");
 
 async function sendData() {
     let data = {
         "username": $("#username").val(),
-        "email": $("#email").val(),
-        "password": $("#password").val(),
-        "lastname": $("#lastname").val(),
-        "firstname": $("#firstname").val(),
-        "phonenumber": $("#phonenumber").val()
-    };
-
+        "password": $("#password").val()
+    }
     $.ajax({
-        url: '/api/user/register',
+        url: '/api/user/login',
         type: 'POST',
         data: JSON.stringify(data),
-        contentType: 'application/json; charset=utf-8',
+        contentType: "application/json; charset=utf-8",
         traditional: true,
         success: (result) => {
             if (result.statusCode === 200) {
-                $("#userinfo").trigger("reset");
-                toastr.success("User registered successfully! Please login to continue");
+                $("#logininfo").trigger("reset");
+                // alert("Logged in Succesfully")
+                toastr.success("Logged in Successfully");
+                console.log(result)
+                localStorage.setItem('token',result.data.token)
+                window.location.replace("http://localhost:3000/home/");
             }
         },
         error: (error) => {
-            console.error("Error during registration:", error.responseJSON);
-
-            if (error.responseJSON && error.responseJSON.error.message) {
-                console.log('err',error.responseJSON.error.message)
-                // Display server-side validation error message
-                toastr.error(error.responseJSON.error.message);
-            } else {
-                // Display a generic error message
-                toastr.error("Failed to register user. Please try again.");
-            }
+            console.error("Error in AJAX request:", error);
+            toastr.error(error.responseJSON['error']['message']);
         }
     });
 }
 
-
-
-
 // Take over form submission
 form.addEventListener("submit", (event) => {
-
     event.preventDefault();
     sendData();
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
