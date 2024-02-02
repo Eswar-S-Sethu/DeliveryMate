@@ -6,12 +6,7 @@ const acceptedRequest = require('./routes/acceptedRequest.routes.js');
 const authenticateToken = require('./utils/authenticateToken.js')
 const path = require('path');
 const app = express()
-const http=require('http')
-const {Server}=require("socket.io")
-
-const server=http.createServer(app);
-const io=new Server(server);
-const port = 3000 || process.env.port
+const port = 3000 | process.env.port
 
 //database connection
 require('./utils/dbConnection')
@@ -34,26 +29,6 @@ app.get('/home', (req, res) => {
 app.get('/new-request', (req, res) => {
     res.sendFile(path.join(__dirname + '/public/createrequest.html'));
 })
-
-io.on('connection', (socket) => {
-    console.log('a user connected');
-
-    // Listen for chatMessage event from clients
-    socket.on('chatMessage', (msg) => {
-        // Broadcast message to all clients
-        io.emit('chatMessage', msg);
-    });
-
-    // Optional: Handle message read event
-    socket.on('messageRead', (msg) => {
-        // Implement logic for read receipt
-    });
-
-    socket.on('disconnect', () => {
-        console.log('user disconnected');
-    });
-});
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
