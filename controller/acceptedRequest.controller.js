@@ -61,13 +61,14 @@ const deleteAcceptedRequest = async (req, res, next) => {
         return next(error);
     }
 };
-// Controller function to get all accepted requests
 const getAllAcceptedRequests = async (req, res, next) => {
     try {
         const acceptingUserId = req.user.id; // Assuming you have user information in req.user
 
-        // Get all accepted requests for the current user
-        const acceptedRequests = await AcceptedRequest.find({ acceptingUserId });
+        // Get all accepted requests for the current user and populate user and request details
+        const acceptedRequests = await AcceptedRequest.find({ acceptingUserId })
+            .populate('acceptingUserId', 'username email') // Add user fields you want to populate
+            .populate('requestId', 'itemName itemWeight itemSize itemDestination itemPickup itemTips itemNotes itemImage submissionTime userId'); // Add request fields you want to populate
 
         res.json({ acceptedRequests });
     } catch (error) {
@@ -75,4 +76,5 @@ const getAllAcceptedRequests = async (req, res, next) => {
         return next(error);
     }
 };
+
 module.exports = { createAcceptedRequest, deleteAcceptedRequest, getAllAcceptedRequests };

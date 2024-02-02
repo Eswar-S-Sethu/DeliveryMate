@@ -9,7 +9,7 @@ const acceptedRequestSchema = new mongoose.Schema({
     },
     acceptingUserId: {
         type: Schema.Types.ObjectId,
-        ref: 'User',
+        ref: 'user',
         required: true,
     }
 }, { timestamps: true });
