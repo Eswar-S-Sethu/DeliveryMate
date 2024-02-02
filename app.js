@@ -38,12 +38,15 @@ app.get('/request-management', (req, res) => {
 app.get('/account-management', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', '/accountManagement/accountManagement.html'));
 });
+app.get('/accepted-request', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', '/acceptedRequest/acceptedRequest.html'));
+});
 
 
 //backend routes
 app.use('/api/user', userRoutes)
 app.use('/api/delivery', authenticateToken,deliveryRoutes)
-app.use('/api/accepet', authenticateToken,acceptedRequest)
+app.use('/api/accepetedRequest', authenticateToken,acceptedRequest)
 
 //error handling
 app.use(logErrors)

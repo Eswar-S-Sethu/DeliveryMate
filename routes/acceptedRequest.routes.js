@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const { createAcceptedRequest, deleteAcceptedRequest } = require('../controller/acceptedRequest.controller');
-
+const { createAcceptedRequest, deleteAcceptedRequest, getAllAcceptedRequests } = require('../controller/acceptedRequest.controller');
+//get all accepted request
+router.get('/', getAllAcceptedRequests)
 // Create an accepted request
 router.post('/:requestId', createAcceptedRequest);
 
