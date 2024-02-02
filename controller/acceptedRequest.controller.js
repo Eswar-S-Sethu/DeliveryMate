@@ -42,18 +42,18 @@ const deleteAcceptedRequest = async (req, res, next) => {
     try {
         const requestId = req.params.requestId;
         const acceptingUserId = req.user.id; // Assuming you have user information in req.user
-
         // Check if the accepted request with the given ID exists
         const existingAcceptedRequest = await AcceptedRequest.findOne({
             requestId,
             acceptingUserId,
         });
+        console.log(existingAcceptedRequest)
         if (!existingAcceptedRequest) {
             return res.status(404).json({ message: 'Accepted request not found' });
         }
 
         // Delete the accepted request
-        await existingAcceptedRequest.remove();
+        await existingAcceptedRequest.deleteOne()
 
         return res.status(200).json({ message: 'Accepted request deleted successfully!' });
     } catch (error) {
@@ -61,5 +61,18 @@ const deleteAcceptedRequest = async (req, res, next) => {
         return next(error);
     }
 };
+// Controller function to get all accepted requests
+const getAllAcceptedRequests = async (req, res, next) => {
+    try {
+        const acceptingUserId = req.user.id; // Assuming you have user information in req.user
 
-module.exports = { createAcceptedRequest, deleteAcceptedRequest };
+        // Get all accepted requests for the current user
+        const acceptedRequests = await AcceptedRequest.find({ acceptingUserId });
+
+        res.json({ acceptedRequests });
+    } catch (error) {
+        console.error(error);
+        return next(error);
+    }
+};
+module.exports = { createAcceptedRequest, deleteAcceptedRequest, getAllAcceptedRequests };
