@@ -66,5 +66,46 @@ const getCurrentUser = async (req, res, next) => {
         next(err)
     }
 }
+// for editing user data
+const changeUserDetails=async(req,res,next)=>{
+    const{newFirstname,newLastname,newEmail,newPhone}=req.body;
+    const userId=req.user.id;
 
-module.exports = { postUser, getUsers, loginUser ,getCurrentUser}
+    try{
+        const user=await User.findById(userId);
+
+        user.firstname=newFirstname;
+        user.lastname=newLastname;
+        user.email=newEmail;
+        user.phonenumber=newPhone;
+
+        await user.save();
+
+        return res.json({message:"User details updated successfully"});
+    }
+    catch(error){
+        next(error);
+    }
+}
+
+// for changing password
+const changePassword=async(req,res,next)=>{
+    const { currentPassword,newPassword}=req.body;
+    const userId=req.user.id;
+
+    try{
+        const user=await User.findById(userId);
+
+        const isPasswordValid=await bcrypt.compare(currentPassword,user.password);
+        if(!isPasswordValid){
+            return res.statusCode(400).json({message:"Current password is incorrect"});
+        }
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        user.password = hashedPassword;
+        await user.save();
+        return res.json({ message: 'Password updated successfully.' });
+    } catch (error) {
+        next(error)
+    }
+};
+module.exports = { postUser, getUsers, loginUser ,getCurrentUser,changePassword,changeUserDetails}

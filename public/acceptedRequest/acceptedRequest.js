@@ -44,6 +44,7 @@ function displayAcceptedRequests(acceptedRequests) {
                 <p class="card-text">Accepted By: ${request.acceptingUserId}</p>
                 <p class="card-text">Timestamp: ${new Date(request.createdAt).toLocaleString()}</p>
                 <button class="btn btn-danger" onclick="deleteAcceptedRequest('${request.requestId}')">Cancel Acceptance</button>
+                <button class="btn btn-success" onclick="goToChatPage()">Chat</button>
             </div>
         `;
 
