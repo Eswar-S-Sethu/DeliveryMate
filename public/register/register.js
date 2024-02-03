@@ -36,25 +36,40 @@ async function sendData() {
         "username": $("#username").val(),
         "email": $("#email").val(),
         "password": $("#password").val(),
-        "lastname":$("#lastname").val(),
-        "firstname":$("#firstname").val(),
-        "phonenumber":$("#phonenumber").val()
-    }
+        "lastname": $("#lastname").val(),
+        "firstname": $("#firstname").val(),
+        "phonenumber": $("#phonenumber").val()
+    };
+
     $.ajax({
         url: '/api/user/register',
         type: 'POST',
         data: JSON.stringify(data),
-        contentType: "application/json; charset=utf-8",
+        contentType: 'application/json; charset=utf-8',
         traditional: true,
         success: (result) => {
             if (result.statusCode === 200) {
                 $("#userinfo").trigger("reset");
-                alert("User registered Succesfully")
-                window.location.replace("http://localhost:3000/");
+                toastr.success("User registered successfully! Please login to continue");
+            }
+        },
+        error: (error) => {
+            console.error("Error during registration:", error.responseJSON);
+
+            if (error.responseJSON && error.responseJSON.error.message) {
+                console.log('err',error.responseJSON.error.message)
+                // Display server-side validation error message
+                toastr.error(error.responseJSON.error.message);
+            } else {
+                // Display a generic error message
+                toastr.error("Failed to register user. Please try again.");
             }
         }
     });
 }
+
+
+
 
 // Take over form submission
 form.addEventListener("submit", (event) => {
