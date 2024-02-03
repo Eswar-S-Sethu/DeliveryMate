@@ -6,14 +6,74 @@ const acceptedRequest = require('./routes/acceptedRequest.routes.js');
 const authenticateToken = require('./utils/authenticateToken.js')
 const path = require('path');
 const app = express()
-const server=http.createServer(app);
-const io=new Server(server);
+
+// for user active or inactive states
+const socket=require('socket.io')
+const http=require('http')
+const server = http.createServer(app);
+const io = socket(server);
+
+// Connected users set
+const connectedUsers = new Set();
+
+io.on('connection', (socket) => {
+    console.log(`User connected: ${socket.id}`);
+
+    // Listen for user joining for presence
+    socket.on('joinPresence', ({ userId }) => {
+        connectedUsers.add({ userId, socketId: socket.id });
+
+        // Notify everyone about the updated user presence
+        io.emit('userPresence', getUserPresence(userId));
+    });
+
+    // Listen for user disconnecting
+    socket.on('disconnect', () => {
+        console.log(`User disconnected: ${socket.id}`);
+        // Remove user from the set of connected users
+        connectedUsers.delete(socket.id);
+
+        // Notify everyone about the updated user presence
+        io.emit('userPresence', getUserPresence());
+    });
+});
+
+function getUserPresence(userId) {
+    const isUserOnline = Array.from(connectedUsers).some(user => user.userId === userId);
+    return isUserOnline ? 'Online' : 'Offline';
+}
+async function getUserInfo(){
+    const userToken = localStorage.getItem('token');
+
+    try{
+        const response = await fetch('/api/user/currentuser', {
+            headers: {
+                'Authorization': userToken,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch user details');
+        }
+
+        const responseData = await response.json();
+        console.log(responseData)
+
+        return responseData;
+    }
+    catch(error){
+        console.log("Error:".error);
+    }
+}
+
 const port = 3000 | process.env.port
 
 //database connection
 require('./utils/dbConnection')
 app.use(express.static(__dirname+'/public'))
 app.use('/uploads', express.static(__dirname + '/uploads')); // Serve images from the uploads directory
+
 
 //frontend routes
 app.get('/', function (req, res) {
@@ -55,6 +115,10 @@ app.get('/account-management', (req, res) => {
 app.get('/accepted-request', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', '/acceptedRequest/acceptedRequest.html'));
 });
+// will implement this if possible
+app.get('/chats',(req,res)=>{
+    res.sendFile(path.join(__dirname,'public','/chatbox.html'));
+})
 
 
 //backend routes

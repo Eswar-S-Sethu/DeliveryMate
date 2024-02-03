@@ -1,4 +1,36 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded',async() => {
+
+    const userAuth=localStorage.getItem('token')
+
+    try{
+        const response = await fetch('/api/user/currentuser',{
+            headers:{
+                'Authorization':userAuth
+            }
+        });
+        if (!response.ok) {
+            throw new Error('Failed to fetch user details');
+        }
+
+        const userData = await response.json();
+    }
+    catch (error) {
+        console.error('Error:', error);
+    }
+
+    const socket = io();
+
+    // Emit user details when the page loads
+    socket.emit('joinPresence', { userId: userData.userId });
+
+    // Listen for user presence updates
+    socket.on('userPresence', (status) => {
+        updatePresenceStatus(status);
+    });
+    function updatePresenceStatus(status) {
+        const presenceStatusElement = document.getElementById('userActivityStatus');
+        presenceStatusElement.innerText = `User Presence: ${status}`;
+    }
     // Fetch and display accepted requests
     fetchAcceptedRequests();
 });
@@ -44,13 +76,17 @@ function displayAcceptedRequests(acceptedRequests) {
                 <p class="card-text">Accepted By: ${request.acceptingUserId}</p>
                 <p class="card-text">Timestamp: ${new Date(request.createdAt).toLocaleString()}</p>
                 <button class="btn btn-danger" onclick="deleteAcceptedRequest('${request.requestId}')">Cancel Acceptance</button>
-                <button class="btn btn-success" onclick="goToChatPage()">Chat</button>
             </div>
         `;
 
         card.innerHTML = cardContent;
         container.appendChild(card);
     });
+}
+
+function updateUserActivityStatus(isActive){
+    const statusElement=document.getElementById("userActivityStatus");
+    statusElement.innerText=`User status:${isActive ? 'Active' : 'Inactive'}`;
 }
 
 
