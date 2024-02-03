@@ -26,10 +26,13 @@
                     <a class="nav-link" href="/request-management">Request Management</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/account-management">Account Management</a>
+                    <a class="nav-link" href="/accepted-request">Accepted Request</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/">Login</a>
+                    <a class="nav-link" href="/account-management">Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Logout</a>
                 </li>
             </ul>
         </div>
@@ -40,28 +43,29 @@
 <div class="container mt-4">
     <div class="card">
         <div class="card-header">
-            <h3 class="mb-0">Account Management</h3>
+            <h3 class="mb-0">Profile</h3>
         </div>
         <div class="card-body">
             <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" id="email" class="form-control" value="john.doe@example.com" readonly>
+                <label for="firstname">Firstname</label>
+                <input type="text" id="firstname" class="form-control" readonly>
             </div>
             <div class="form-group">
-                <label for="phone">Phone:</label>
-                <input type="tel" id="phone" class="form-control" value="123-456-7890" readonly>
+                <label for="lastname">Lastname</label>
+                <input type="text" id="lastname" class="form-control" readonly>
             </div>
             <div class="form-group">
-                <label for="region">Region:</label>
-                <input type="text" id="region" class="form-control" value="Cityville" readonly>
+                <label for="email">Email</label>
+                <input type="email" id="email" class="form-control" readonly>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone number</label>
+                <input type="tel" id="phone" class="form-control" readonly>
             </div>
             <button class="btn btn-success ml-auto" data-toggle="modal" data-target="#editModal">Edit</button>
         </div>
 
         <div class="card-body">
-            <div class="form-group">
-                <label for="password">Change Current Password:</label>
-            </div>
             <button class="btn btn-success ml-auto" data-toggle="modal" data-target="#passwordChangeModal">Change Password</button>
         </div>
     </div>
@@ -73,21 +77,25 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h4 class="modal-title">Edit Account Details</h4>
+                <h4 class="modal-title">Edit Profile</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
-                    <label for="editEmail">Email:</label>
-                    <input type="email" id="editEmail" class="form-control" value="john.doe@example.com">
+                    <label for="editFirstname">Firstname</label>
+                    <input type="text" id="editFirstname" class="form-control" placeholder="Firstname">
                 </div>
                 <div class="form-group">
-                    <label for="editPhone">Phone:</label>
-                    <input type="tel" id="editPhone" class="form-control" value="123-456-7890">
+                    <label for="editLastname">Lastname</label>
+                    <input type="text" id="editLastname" class="form-control" placeholder="Lastname">
                 </div>
                 <div class="form-group">
-                    <label for="editRegion">Region:</label>
-                    <input type="text" id="editRegion" class="form-control" value="Cityville">
+                    <label for="editEmail">Email</label>
+                    <input type="email" id="editEmail" class="form-control" placeholder="Email">
+                </div>
+                <div class="form-group">
+                    <label for="editPhone">Phone</label>
+                    <input type="tel" id="editPhone" class="form-control" placeholder="Phone">
                 </div>
                 <button class="btn btn-success" onclick="saveChanges()">Save</button>
             </div>
@@ -120,7 +128,7 @@
                         <label for="confirmPassword">Confirm Password</label>
                         <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm new password">
                     </div>
-                    <button type="submit" class="btn btn-success">Save Changes</button>
+                    <button type="submit" class="btn btn-success" onclick="changePassword()">Save Changes</button>
                 </form>
             </div>
         </div>
@@ -131,11 +139,115 @@
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 
 <script>
+    document.addEventListener("DOMContentLoaded",function(){
+        fetchUserData();
+
+    async function fetchUserData(){
+        const authToken=localStorage.getItem('token');
+        try{
+            const response=await fetch('/api/user/currentUser',{
+                method:'GET',
+                headers:{
+                    'Authorization':`${authToken}`
+                }
+            });
+
+            if(!response.ok){
+                throw new Error('Failed to fetch user data');
+            }
+
+            const userData=await response.json();
+
+            // populate the data 
+            document.getElementById('firstname').value=userData.data.firstname;
+            document.getElementById('lastname').value=userData.data.lastname;
+            document.getElementById('email').value=userData.data.email;
+            document.getElementById('phone').value=userData.data.phonenumber;
+        }
+        catch(error){
+            console.log(error)
+        }
+    }
+    })
+    
     function saveChanges() {
         // Add logic for saving changes
-        alert("Changes saved!");
+        const newFirstname=document.getElementById('editFirstname').value;
+        const newLastname=document.getElementById('editLastname').value;
+        const newEmail=document.getElementById('editEmail').value;
+        const newPhone=document.getElementById('editPhone').value;
+
+        const data={newFirstname:newFirstname,newLastname:newLastname,newEmail:newEmail,newPhone:newPhone};
+
+        updateData(data);
+    }
+    function changePassword(){
+        // logic for saving new password
+        const currentPassword = document.getElementById('currentPassword').value;
+        const newPassword = document.getElementById('newPassword').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        // do a little validation
+        if (newPassword !== confirmPassword) {
+            alert('New password and confirm password do not match.');
+            return;
+        }
+        const data={currentPassword:currentPassword,newPassword:newPassword};
+
+        sendData(data);
+
+    }
+
+    async function sendData(data){
+
+        const authToken=localStorage.getItem('token');
+
+        try {
+
+            const response = await fetch('/api/user/change-password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `${authToken}`
+                },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+
+            console.log(result.message);
+            // Add further actions as needed, e.g., redirect, update UI, etc.
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again later.');
+        }
+
+    }
+    async function updateData(data){
+        const authToken=localStorage.getItem('token');
+
+        try{
+            const response=await fetch('/api/user/changeuserDetails',{
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json',
+                    'Authorization':`${authToken}`
+                },
+                body:JSON.stringify(data)
+            });
+
+            const result=await response.json();
+
+            console.log(result.message);
+            // add further actions. UI actions like, a toast message
+        }
+        catch(error){
+            console.log("Error",error);
+            alert("An error occurred. please check the console");
+        }
     }
 </script>
 

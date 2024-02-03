@@ -38,28 +38,15 @@ function displayAcceptedRequests(acceptedRequests) {
         card.className = 'card mb-3';
 
         const cardContent = `
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-4">
-                    <img src="${request.requestId.itemImage}" alt="Item Image" class="card-img-top">
-                </div>
-                <div class="col-md-8">
-                    <h5 class="card-title">Accepted Request #${request._id}</h5>
-                    <p class="card-text">Item Name: ${request.requestId.itemName}</p>
-                    <p class="card-text">Item Weight: ${request.requestId.itemWeight}</p>
-                    <p class="card-text">Item Size: ${request.requestId.itemSize}</p>
-                    <p class="card-text">Item Destination: ${request.requestId.itemDestination}</p>
-                    <p class="card-text">Item Pick-Up: ${request.requestId.itemPickup}</p>
-                    <p class="card-text">Item Tips: ${request.requestId.itemTips}</p>
-                    <p class="card-text">Item Notes: ${request.requestId.itemNotes}</p>
-                    <p class="card-text">Accepted Time: ${new Date(request.requestId.submissionTime).toLocaleString()}</p>
-                    <button class="btn btn-danger" onclick="deleteAcceptedRequest('${request.requestId._id}')">Cancel Acceptance</button>
-                </div>
+            <div class="card-body">
+                <h5 class="card-title">Accepted Request #${request._id}</h5>
+                <p class="card-text">Request ID: ${request.requestId}</p>
+                <p class="card-text">Accepted By: ${request.acceptingUserId}</p>
+                <p class="card-text">Timestamp: ${new Date(request.createdAt).toLocaleString()}</p>
+                <button class="btn btn-danger" onclick="deleteAcceptedRequest('${request.requestId}')">Cancel Acceptance</button>
+                <button class="btn btn-success" onclick="goToChatPage()">Chat</button>
             </div>
-        </div>
-    `;
-    
-    
+        `;
 
         card.innerHTML = cardContent;
         container.appendChild(card);
