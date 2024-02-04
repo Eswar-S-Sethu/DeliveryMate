@@ -34,3 +34,7 @@
 .btn:hover{
 	background-position: right;
 }
+
+.custom-mt-5 {
+	margin-top: 80px;
+}
