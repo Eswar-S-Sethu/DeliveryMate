@@ -35,9 +35,12 @@
 
 
 .image {
-    width: 100%; /* set fixed width */
-    height: 150px;/*fixed height, in order to within the card image*/
-    object-fit: contain;/* Maintain the aspect ratio */
+    width: 100%;
+    /* set fixed width */
+    height: 150px;
+    /*fixed height, in order to within the card image*/
+    object-fit: contain;
+    /* Maintain the aspect ratio */
 
 }
 
@@ -54,28 +57,58 @@ ul {
 
 
 /*Submit button*/
-.btn{
-	display: block;
-	width: 80%;
-	height: 40px;
-	border-radius: 25px;
-	outline: none;
-	border: none;
-	background-image: linear-gradient(to right, #BBFFBB, #a8d46f, #32be8f);
-	background-size: 200%;
-	font-size: 0.8rem;
-	color: #fff;
-	font-family: 'Poppins', sans-serif;
-	text-transform: uppercase;
-	margin: 1rem 0;
-	cursor: pointer;
-	transition: .5s;
+.btn {
+    display: block;
+    width: 80%;
+    height: 40px;
+    border-radius: 25px;
+    outline: none;
+    border: none;
+    background-image: linear-gradient(to right, #BBFFBB, #a8d46f, #32be8f);
+    background-size: 200%;
+    font-size: 0.8rem;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    text-transform: uppercase;
+    margin: 1rem 0;
+    cursor: pointer;
+    transition: .5s;
 }
 
-.btn:hover{
-	background-position: right;
+.btn:hover {
+    background-position: right;
 }
 
 .request-box {
-    margin-top: 80px; 
+    margin-top: 80px;
+    border-radius: 10px 10px 10px 10px;
+}
+
+.custom-btn, .clearbtn {
+    display: block;
+    width: 80%;
+    height: 40px;
+    border-radius: 25px;
+    outline: none;
+    border: none;
+    background-image: linear-gradient(to right, #BBFFBB, #a8d46f, #32be8f);
+    background-size: 200%;
+    font-size: 0.8rem;
+    color: #fff;
+    font-family: 'Poppins', sans-serif;
+    text-transform: uppercase;
+    margin: 1rem 0;
+    cursor: pointer;
+    transition: .5s;
+
+}
+
+.custom-border {
+    border: 2px solid #a8d46f;
+
+}
+
+.custom-btn:hover, .clearbtn:hover {
+    background-position: right;
+    color: black; 
 }
