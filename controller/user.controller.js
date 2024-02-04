@@ -1,6 +1,9 @@
 const User = require("../model/user.model")
 const generateAccessToken = require("../utils/generateToken")
 const bcrypt = require("bcrypt")
+const crypto = require('crypto');
+const nodemailer = require('nodemailer');
+const sgMail = require('@sendgrid/mail')
 
 const postUser = async (req, res, next) => {
     let userdata = req.body
@@ -67,39 +70,41 @@ const getCurrentUser = async (req, res, next) => {
     }
 }
 // for editing user data
-const changeUserDetails=async(req,res,next)=>{
-    const{newFirstname,newLastname,newEmail,newPhone}=req.body;
-    const userId=req.user.id;
+const changeUserDetails = async (req, res, next) => {
+    const { newFirstname, newLastname, newEmail, newPhone } = req.body;
+    const userId = req.user.id;
 
-    try{
-        const user=await User.findById(userId);
+    try {
+        const user = await User.findById(userId);
 
-        user.firstname=newFirstname;
-        user.lastname=newLastname;
-        user.email=newEmail;
-        user.phonenumber=newPhone;
+        user.firstname = newFirstname;
+        user.lastname = newLastname;
+        user.email = newEmail;
+        user.phonenumber = newPhone;
 
         await user.save();
 
-        return res.json({message:"User details updated successfully"});
+        return res.json({ message: "User details updated successfully" });
     }
-    catch(error){
+    catch (error) {
         next(error);
     }
 }
 
 // for changing password
-const changePassword=async(req,res,next)=>{
-    const { currentPassword,newPassword}=req.body;
-    const userId=req.user.id;
+const changePassword = async (req, res, next) => {
+    const { currentPassword, newPassword,forgot } = req.body;
+    const userId = req.user.id;
 
-    try{
-        const user=await User.findById(userId);
-
-        const isPasswordValid=await bcrypt.compare(currentPassword,user.password);
-        if(!isPasswordValid){
-            return res.statusCode(400).json({message:"Current password is incorrect"});
+    try {
+        const user = await User.findById(userId);
+        if(!forgot){
+            const isPasswordValid = await bcrypt.compare(currentPassword, user.password);
+            if (!isPasswordValid) {
+                return res.statusCode(400).json({ message: "Current password is incorrect" });
+            }
         }
+       
         const hashedPassword = await bcrypt.hash(newPassword, 10);
         user.password = hashedPassword;
         await user.save();
@@ -108,4 +113,59 @@ const changePassword=async(req,res,next)=>{
         next(error)
     }
 };
-module.exports = { postUser, getUsers, loginUser ,getCurrentUser,changePassword,changeUserDetails}
+
+
+
+
+const transporter = nodemailer.createTransport({
+    host: 'smtp.sendgrid.net',
+    port: 465, // Use port 465 for SSL
+    secure: true, // Use SSL
+    auth: {
+        user: 'apikey',
+        pass: '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',
+    },
+});
+// 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
+
+const requestPasswordReset = async (req, res, next) => {
+    const { email } = req.body;
+
+    try {
+        // Check if the user exists
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        let resetToken = generateAccessToken(user._id)
+        // Send email with reset link
+        const resetLink = `http://localhost:3000/reset-password/?token=${resetToken}`;
+        const mailOptions = {
+            from: 'bidhanbabu69@gmail.com',
+            to: email,
+            subject: 'Password Reset Request',
+            html: `Click the following link to reset your password:<a href='${resetLink}'>Click Here <a/>`
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.error('Error sending email:', error);
+                return res.status(500).json({ message: 'Error sending email' });
+            }
+            console.log('Email sent:', info.response);
+            return res.json({ message: 'Password reset email sent successfully' });
+        });
+
+
+    } catch (error) {
+        console.error(error);
+        return next(error);
+    }
+};
+
+
+
+
+
+
+module.exports = { postUser, getUsers, loginUser, getCurrentUser, changePassword, changeUserDetails, requestPasswordReset }
