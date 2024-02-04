@@ -7,6 +7,7 @@
     <title>Request Management</title>
     <!-- Bootstrap CSS CDN -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 
     <style>
@@ -21,13 +22,20 @@
 
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top"
-        style="background-color: #4caf50; display: flex; justify-content: space-between; margin-bottom: 20px;">
+        style="background-image: linear-gradient(to right, #BBFFBB, #a8d46f, #32be8f); display: flex; justify-content: space-between; margin-bottom: 20px;">
         <div class="container">
             <a class="navbar-brand" href="#">DeliveryMate</a>
             <div class="navbar-collapse">
                 <ul class="navbar-nav ml-auto">
+                    <!-- Notification icon added here -->
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#" class="current">
+                            <i class="fas fa-bell"></i> <!-- Font Awesome bell icon -->
+                        </a>
+                    </li>
+                    <!-- Other navbar items -->
                     <li class="nav-item">
-                        <a class="nav-link" href="/home" class="current">Home</a>
+                        <a class="nav-link" href="#">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/new-request">New Request</a>
@@ -49,6 +57,7 @@
         </div>
     </nav>
 
+
     <!-- Request Management Cards -->
     <div class="container mt-4" id="requestContainer">
         <!-- JavaScript will dynamically add cards here -->
@@ -63,10 +72,174 @@
     <!-- Bootstrap JS and Popper.js CDN -->
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <!-- The above jQuery inclusion is enough; no need to include it again -->
-    <script type="text/javascript" src="/js/userDetailsFetch.js"></script>
-    <script type="text/javascript" src="/requestManagement/requestMangement.js"></script>
+
+    <script>
+        // Dummy data (replace this with data from your database)
+        const requestList = [
+            {
+                id: 1,
+                itemName: "Example Item 1",
+                weight: "10 kg",
+                size: "Small",
+                destination: "Example Destination 1",
+                pickup: "Example Pickup Location 1",
+                notes: "This is a note about request 1",
+                tips: "$5.00",
+                imageUrl: "url_to_image1.jpg"
+            },
+            {
+                id: 2,
+                itemName: "Example Item 2",
+                weight: "15 kg",
+                size: "Large",
+                destination: "Example Destination 2",
+                pickup: "Example Pickup Location 2",
+                notes: "This is a note about request 2",
+                tips: "$10.00",
+                imageUrl: "url_to_image2.jpg"
+            }
+            // Add more request objects as needed
+        ];
+
+        // Function to create cards based on request data
+        function createRequestCards() {
+            const container = document.getElementById("requestContainer");
+
+            requestList.forEach(request => {
+                // Create card element
+                const card = document.createElement("div");
+                card.className = "card mb-3";
+
+                // Create card content
+                const cardContent = `
+                <div class="row no-gutters">
+                    <div class="col-md-4 d-flex align-items-center justify-content-center">
+                        <img src="${request.imageUrl}" class="card-img" alt="Request Image ${request.id}">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">Request #${request.id}</h5>
+                            <p class="card-text">Item Name: ${request.itemName}</p>
+                            <p class="card-text">Weight: ${request.weight}</p>
+                            <p class="card-text">Size: ${request.size}</p>
+                            <p class="card-text">Destination: ${request.destination}</p>
+                            <p class="card-text">Pick-up: ${request.pickup}</p>
+                            <p class="card-text">Notes: ${request.notes}</p>
+                            <p class="card-text">Tips: ${request.tips}</p>
+                            <div class="d-flex">
+                    <button class="btn btn-success me-2" data-toggle="modal" data-target="#editModal${request.id}">Edit</button>
+                    <button onclick="deleteRequest(${request.id})" class="btn btn-danger">Delete</button>
+                </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+                card.innerHTML = cardContent;
+
+                // Append card to container
+                container.appendChild(card);
+
+                // Create corresponding edit modal
+                createEditModal(request);
+            });
+            const style = document.createElement('style');
+            style.innerHTML = `
+    .btn {
+        display: block;
+        width: 100%;
+        height: 50px;
+        border-radius: 25px;
+        outline: none;
+        border: none;
+        background-image: linear-gradient(to right, #BBFFBB, #a8d46f, #32be8f);
+        background-size: 200%;
+        font-size: 1.2rem;
+        color: #fff;
+        font-family: 'Poppins', sans-serif;
+        text-transform: uppercase;
+        margin: 1rem 0;
+        cursor: pointer;
+        transition: .5s;
+    }
+
+    .btn:hover {
+        background-position: right;
+    }
+`;
+
+            document.head.appendChild(style);
+        }
+
+        // Function to create edit modal for each request
+        function createEditModal(request) {
+            const modalContainer = document.createElement("div");
+            modalContainer.innerHTML = `
+            <div class="modal fade" id="editModal${request.id}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editModalLabel">Edit Request #${request.id}</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="editItemName">Item Name:</label>
+                                <input type="text" id="editItemName${request.id}" class="form-control" value="${request.itemName}">
+                            </div>
+                            <div class="form-group">
+                                <label for="editWeight">Weight:</label>
+                                <input type="text" id="editWeight${request.id}" class="form-control" value="${request.weight}">
+                            </div>
+                            <div class="form-group">
+                                <label for="editSize">Size:</label>
+                                <input type="text" id="editSize${request.id}" class="form-control" value="${request.size}">
+                            </div>
+                            <div class="form-group">
+                                <label for="editDestination">Destination:</label>
+                                <input type="text" id="editDestination${request.id}" class="form-control" value="${request.destination}">
+                            </div>
+                            <div class="form-group">
+                                <label for="editPickup">Pick-up:</label>
+                                <input type="text" id="editPickup${request.id}" class="form-control" value="${request.pickup}">
+                            </div>
+                            <div class="form-group">
+                                <label for="editNotes">Notes:</label>
+                                <textarea id="editNotes${request.id}" class="form-control" rows="4">${request.notes}</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="editTips">Tips:</label>
+                                <input type="text" id="editTips${request.id}" class="form-control" value="${request.tips}">
+                            </div>
+                            <div class="form-group">
+                                <label for="editImageUrl">Image URL:</label>
+                                <input type="text" id="editImageUrl${request.id}" class="form-control" value="${request.imageUrl}">
+                            </div>
+                            <button class="btn btn-primary" onclick="saveChanges(${request.id})">Save Changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+            document.body.appendChild(modalContainer);
+        }
+
+        // Function to delete request (replace this with actual logic)
+        function deleteRequest(requestId) {
+            alert(`Delete request with ID: ${requestId}`);
+        }
+
+        // Function to save changes (replace this with actual logic)
+        function saveChanges(requestId) {
+            $(`#editModal${requestId}`).modal('hide');
+            alert(`Save changes for request with ID: ${requestId}`);
+
+        }
+
+        // Initialize the page
+        createRequestCards();
+    </script>
 
 </body>
 
