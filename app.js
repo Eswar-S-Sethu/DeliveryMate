@@ -91,7 +91,12 @@ app.get('/home', (req, res) => {
 app.get('/new-request', (req, res) => {
     res.sendFile(path.join(__dirname + '/public/createrequest.html'));
 })
-
+app.get('/forget-password', (req, res) => {
+    res.sendFile(path.join(__dirname + '/public/forget-password/forget-password.html'));
+})
+app.get('/reset-password', (req, res) => {
+    res.sendFile(path.join(__dirname + '/public/reset-password/reset-password.html'));
+})
 io.on('connection',(socket)=>{
     console.log('user connected');
 
