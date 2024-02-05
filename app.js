@@ -120,10 +120,6 @@ app.get('/account-management', (req, res) => {
 app.get('/accepted-request', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', '/acceptedRequest/acceptedRequest.html'));
 });
-// will implement this if possible
-app.get('/chats',(req,res)=>{
-    res.sendFile(path.join(__dirname,'public','/chatbox.html'));
-})
 
 
 //backend routes
