@@ -90,6 +90,7 @@ function displayAcceptedRequests(acceptedRequests) {
 
 // socket part starts, don't touch this code. 
 // for getting the user info
+/*
 async function getUserInfo() {
     const userToken = localStorage.getItem('token');
 
@@ -108,17 +109,16 @@ async function getUserInfo() {
         const responseData = await response.json();
         console.log(responseData)
 
-        return responseData;
+        return responseData.username;
     }
     catch (error) {
         console.log("Error:".error);
     }
 }
+*/
 
 function openChat(thereqID){
-    console.log("Request id:",thereqID);
     userName="Receiver";
-    // Assuming you have 'request' defined somewhere in your code
     window.location.href = `/chat?username=${userName}&room=${thereqID}`;
 }
 

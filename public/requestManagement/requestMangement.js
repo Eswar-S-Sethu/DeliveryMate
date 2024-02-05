@@ -130,10 +130,9 @@ function createEditModal(request) {
     document.body.appendChild(modalContainer);
 }
 
-function goToChat(thereqID){
-    console.log("Request id:",thereqID);
+
+async function goToChat(thereqID){
     userName="Sender";
-    // Assuming you have 'request' defined somewhere in your code
     window.location.href = `/chat?username=${userName}&room=${thereqID}`;
 }
 
