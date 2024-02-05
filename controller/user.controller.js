@@ -4,6 +4,8 @@ const bcrypt = require("bcrypt")
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const sgMail = require('@sendgrid/mail')
+const dotenv = require('dotenv');
+
 
 const postUser = async (req, res, next) => {
     let userdata = req.body
@@ -123,7 +125,7 @@ const transporter = nodemailer.createTransport({
     secure: true, // Use SSL
     auth: {
         user: 'apikey',
-        pass: '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',
+        pass: process.env.EMAIL_TOKEN,
     },
 });
 // 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
