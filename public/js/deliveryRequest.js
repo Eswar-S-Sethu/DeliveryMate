@@ -35,8 +35,9 @@ function acceptRequest(requestId) {
 }
 
 // Fetch all delivery requests from the API with token in headers
-function fetchAllData(lat = null, long = null) {
-    fetch(lat && long ? `/api/delivery/getAllRequests?latitude=${lat}&longitude=${long}` : `/api/delivery/getAllRequests`, {
+function fetchAllData() {
+    debugger
+    fetch(`/api/delivery/getAllRequests`, {
         method: 'GET',
         headers: {
             'Authorization': userToken,
@@ -86,26 +87,11 @@ function fetchAndPopulateCards(searchKeyword = '') {
     })
         .then(response => response.json())
         .then(data => {
-            console.log(data); // Check the returned API data
-            // Clear existing cards
-            cardContainer.innerHTML = '';
+            cardContainer.innerHTML = ''
+            data.requests.forEach(request => {
+                generateCard(request);
+            });
 
-            // If the search bar is empty, display all items
-            if (searchKeyword === '') {
-                data.requests.forEach(request => {
-                    generateCard(request);
-                });
-            } else {
-                // Otherwise, display only items that match the search criteria
-                const filteredRequests = data.requests.filter(request =>
-                    Object.values(request).some(value =>
-                        typeof value === 'string' && value.toLowerCase().includes(searchKeyword.toLowerCase())
-                    )
-                );
-                filteredRequests.forEach(request => {
-                    generateCard(request);
-                });
-            }
         })
         .catch(error => {
             console.error('Error fetching delivery requests:', error);

@@ -80,15 +80,23 @@ const submitRequest = async (req, res, next) => {
   }
 };
 
-// Rest of your controllers remain the same...
 
-// Rest of your code...
 
-// Controller function to get all delivery requests excluding those posted by the current user
 const getAllRequests = async (req, res, next) => {
   try {
     const userId = req.user.id;
-    const requests = await DeliveryRequest.find({ status: 'pending' });
+    const searchParam = req.query.search; // Assuming 'search' is the parameter for searching
+
+    let query = {
+      status: 'pending',
+      $or: [
+        { itemName: { $regex: new RegExp(searchParam, 'i') } },
+        { 'itemPickup.name': { $regex: new RegExp(searchParam, 'i') } },
+        { 'itemDestination.name': { $regex: new RegExp(searchParam, 'i') } }
+      ]
+    };
+
+    const requests = await DeliveryRequest.find(query);
     res.json({ requests });
   } catch (error) {
     console.error(error);
@@ -96,7 +104,6 @@ const getAllRequests = async (req, res, next) => {
   }
 };
 
-// Rest of your code...
 
 // Controller function to get all delivery requests by user ID
 const getAllRequestsByUserId = async (req, res, next) => {
