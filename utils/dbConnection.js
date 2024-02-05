@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const mongoUrl = "mongodb+srv://bidhan:Ramhari123@cluster0.waheg.mongodb.net/?retryWrites=true&w=majority"
+const dotenv = require('dotenv');
+const mongoUrl = process.env.MONGODB_URL;
 
 mongoose.connect(mongoUrl, {
     useNewUrlParser: true,

@@ -1,5 +1,7 @@
 
-let requestList=[];
+
+let requestList = []
+
 const userToken = localStorage.getItem('token')
 // Function to fetch all requests by the current user
 async function getAllRequestsByCurrentUser() {
@@ -7,16 +9,16 @@ async function getAllRequestsByCurrentUser() {
         const response = await fetch('/api/delivery/getAllRequestsByUser', {
             method: 'GET',
             headers: {
-                'Authorization':  userToken,
+                'Authorization': userToken,
                 'Content-Type': 'application/json'
             }
         }); // Assuming this endpoint returns user details
         const allDeliveryRequestByUser = await response.json();
         console.log(allDeliveryRequestByUser)
         if (allDeliveryRequestByUser && allDeliveryRequestByUser.requests) {
-            
-                return allDeliveryRequestByUser.requests;
-           
+
+            return allDeliveryRequestByUser.requests;
+
         } else {
             throw new Error('Failed to fetch user data');
         }
@@ -88,6 +90,7 @@ function createEditModal(request) {
                         </button>
                     </div>
                     <div class="modal-body">
+                    <form >
                         <div class="form-group">
                             <label for="editItemName">Item Name:</label>
                             <input type="text" id="editItemName${request._id}" class="form-control" value="${request.itemName}">
@@ -102,11 +105,17 @@ function createEditModal(request) {
                         </div>
                         <div class="form-group">
                             <label for="editDestination">Destination:</label>
-                            <input type="text" id="editDestination${request._id}" class="form-control" value="${request.itemDestination}">
+                        <div class="input-group">
+                            <input type="text" class="form-control" id="editDestination${request._id}"
+                                name="editDestination" placeholder="Select on map" readonly value="${request.itemDestination.name}">
+                        </div>
                         </div>
                         <div class="form-group">
                             <label for="editPickup">Pick-up:</label>
-                            <input type="text" id="editPickup${request._id}" class="form-control" value="${request.itemPickup}">
+                            <div class="input-group">
+                            <input type="text" class="form-control" id="editPickUp${request._id}"
+                                name="editPickup" placeholder="Select on map" readonly value="${request.itemPickup.name}">
+                        </div>
                         </div>
                         <div class="form-group">
                             <label for="editNotes">Notes:</label>
@@ -118,9 +127,10 @@ function createEditModal(request) {
                         </div>
                         <div class="form-group">
                             <label for="editImageUrl">Image URL:</label>
-                            <input type="text" id="editImageUrl${request._id}" class="form-control" value="${request.itemImage}">
+                            <input type="file" id="editImageUrl${request._id}" class="form-control" >
                         </div>
-                        <button class="btn btn-primary" onclick="saveChanges(${request._id})">Save Changes</button>
+                        <button class="btn btn-primary" type="button" >Save Changes</button>
+                        </form onclick="saveChanges(${request._id})">
                     </div>
                 </div>
             </div>
@@ -170,7 +180,6 @@ async function updatePageWithUserRequests() {
     }
 }
 function saveChanges(requestId) {
-    deb
     const editItemName = document.getElementById(`editItemName${requestId}`).value;
     const editWeight = document.getElementById(`editWeight${requestId}`).value;
     const editSize = document.getElementById(`editSize${requestId}`).value;
@@ -178,45 +187,50 @@ function saveChanges(requestId) {
     const editPickup = document.getElementById(`editPickup${requestId}`).value;
     const editNotes = document.getElementById(`editNotes${requestId}`).value;
     const editTips = document.getElementById(`editTips${requestId}`).value;
-    const editImageUrl = document.getElementById(`editImageUrl${requestId}`).value;
 
-    const requestData = {
-        id: requestId,
-        itemName: editItemName,
-        itemWeight: editWeight,
-        itemSize: editSize,
-        itemDestination: editDestination,
-        itemPickup: editPickup,
-        itemNotes: editNotes,
-        itemTips: editTips,
-        itemImage: editImageUrl,
-    };
-debugger
-    fetch('/api/delivery/submitRequest', {
-        method: 'POST',
+    // Use FormData to capture form data including the file
+    var formData = new FormData();
+    var fileInput = document.getElementById(`editImageUrl${requestId}`);
+    var itemImageFile = fileInput.files[0];
+
+    formData.append('id', requestId);
+    formData.append('itemImage', itemImageFile);
+    formData.append('itemName', editItemName);
+    formData.append('itemWeight', editWeight);
+    formData.append('itemSize', editSize);
+    formData.append('itemDestination', editDestination);
+    formData.append('itemPickup', editPickup);
+    formData.append('itemTips', editTips);
+    formData.append('itemNotes', editNotes);
+
+    // Make an AJAX request to submit the form data to the server
+    $.ajax({
+        url: '/api/delivery/submitRequest',
+        type: 'POST',
+        data: formData,
+        contentType: false,
+        processData: false,
         headers: {
-            'Content-Type': 'application/json',
+            'authorization': `${userToken}` // Add the token to the headers
         },
-        body: JSON.stringify(requestData),
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! Status: ${response.status}`);
+        success: function (response) {
+            toastr.success(response.message);
+            // Reset the form after success
+            resetImagePreview();
+
+            // Close the modal
+            $(`#editModal${requestId}`).modal('hide');
+
+            // Update the page with the new data
+            updatePageWithUserRequests();
+        },
+        error: function (error) {
+            toastr.error("Failed to submit request.");
+            console.error(error);
         }
-        return response.json();
-    })
-    .then(data => {
-        // Handle the response from the server
-        console.log(data);
-        // You may want to update your UI or take additional actions here
-        $(`#editModal${requestId}`).modal('hide');
-        alert(`Changes saved successfully for request with ID: ${requestId}`);
-    })
-    .catch(error => {
-        console.error('Fetch error:', error);
-        // Handle errors, e.g., display an error message to the user
     });
 }
+
 // Function to delete request
 async function deleteRequest(requestId) {
     try {
@@ -250,4 +264,44 @@ async function deleteRequest(requestId) {
 
 // Initialize the page
 updatePageWithUserRequests();
+// Initialize Leaflet map
+var map = L.map('map').setView([51.505, -0.09], 13);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors'
+}).addTo(map);
+var selectedInputField;
+// Function to open the map and set the selected input field
+function openMap(inputField) {
+    selectedInputField = inputField;
+
+    // Check if the Geolocation API is available
+    if (navigator.geolocation) {
+        // Use Geolocation API to get the current location
+        navigator.geolocation.getCurrentPosition(
+            function (position) {
+                var userLat = position.coords.latitude;
+                var userLng = position.coords.longitude;
+
+                // Center the map at the user's current location
+                map.setView([userLat, userLng], 13);
+
+                // Optionally, you can add a marker at the user's location
+                L.marker([userLat, userLng]).addTo(map);
+
+                // Show the modal
+                $('#mapModal').modal('show');
+            },
+            function (error) {
+                console.error('Error getting user location:', error);
+                // If there is an error, still show the modal without centering on the user's location
+                $('#mapModal').modal('show');
+            }
+        );
+    } else {
+        console.error('Geolocation is not supported by your browser');
+        // If Geolocation is not supported, still show the modal without centering on the user's location
+        $('#mapModal').modal('show');
+    }
+}
 
