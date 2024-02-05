@@ -1,5 +1,7 @@
 
+
 let requestList = []
+
 const userToken = localStorage.getItem('token')
 // Function to fetch all requests by the current user
 async function getAllRequestsByCurrentUser() {
@@ -54,12 +56,16 @@ function createRequestCards() {
                     <div class="d-flex">
                         <button class="btn btn-success me-2" data-toggle="modal" data-target="#editModal${request._id}">Edit</button>
                         <button onclick="deleteRequest('${request._id}')" class="btn btn-danger">Delete</button>
+                        <button onclick="goToChat('${request._id}')" class="btn btn-primary">Go to Chat</button>
                     </div>
                 </div>
             </div>
         </div>
     `;
+
         card.innerHTML = cardContent;
+
+        console.log("REQUEST ID:",request._id);
 
         // Append card to container
         container.appendChild(card);
@@ -68,6 +74,7 @@ function createRequestCards() {
         createEditModal(request);
     });
 }
+
 
 // Function to create edit modal for each request
 function createEditModal(request) {
@@ -129,7 +136,14 @@ function createEditModal(request) {
             </div>
         </div>
     `;
+
     document.body.appendChild(modalContainer);
+}
+
+
+async function goToChat(thereqID){
+    userName="Sender";
+    window.location.href = `/chat?username=${userName}&room=${thereqID}`;
 }
 
 

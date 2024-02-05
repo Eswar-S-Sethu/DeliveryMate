@@ -1,89 +1,107 @@
-const socket=io();
+const socket = io();
 
-document.addEventListener("DOMContentLoaded", function () {
-    let inp = document.getElementById("inp");  // Input element
-    let message = document.getElementById("message");  // Message container
-    let main = document.querySelector(".main");  // Main container
-    let sendButton = document.querySelector(".send");  // Send button
-    let lastMessageTime = null;  // Variable to store the last sent message time
+// Elements
+const $messageForm = document.querySelector('#message-form')
+const $messageFormInput = $messageForm.querySelector('input')
+const $messageFormButton = $messageForm.querySelector('button')
+const $sendLocationButton = document.querySelector('#send-location')
+const $messages = document.querySelector('#messages')
 
-    // Listen for 'Enter' key press in the input field
-    document.onkeydown = function (event) {
-        if (event.key == "Enter") {
-            sendMessage();
-        }
+// Templates
+const messageTemplate = document.querySelector('#message-template').innerHTML
+const locationMessageTemplate = document.querySelector('#location-message-template').innerHTML
+const sidebarTemplate = document.querySelector('#sidebar-template').innerHTML
+
+const { username, room } = Qs.parse(location.search, { ignoreQueryPrefix: true })
+
+
+const autoscroll = () => {
+    const $newMessage = $messages.lastElementChild
+    const newMessageStyles = getComputedStyle($newMessage)
+    const newMessageMargin = parseInt(newMessageStyles.marginBottom)
+    const newMessageHeight = $newMessage.offsetHeight + newMessageMargin
+    const visibleHeight = $messages.offsetHeight
+    const containerHeight = $messages.scrollHeight
+
+    // How far have I scrolled?
+    const scrollOffset = $messages.scrollTop + visibleHeight
+
+    if (containerHeight - newMessageHeight <= scrollOffset) {
+        $messages.scrollTop = $messages.scrollHeight
     }
-    // Listen for 'click' event on the send button
-    sendButton.onclick = function () {
-        sendMessage();
-    };
+}
 
-    // Function to handle sending a message
-    function sendMessage() {
-        let val = inp.value;
-        let currentTime = getCurrentTime();
-
-        // Check if the current message is from a different time
-        if (currentTime !== lastMessageTime) {
-            // Display the time for the new message
-            let timeNode = document.createElement("p");
-            timeNode.classList.add("time");
-            timeNode.textContent = currentTime;
-            timeNode.style.textAlign = "center";
-
-            let messageNode = document.createElement("li");
-            messageNode.appendChild(timeNode);
-
-            lastMessageTime = currentTime;
-            message.appendChild(messageNode);
-        }
-
-        // Display the text of the message
-        let textNode = document.createElement("span");
-        textNode.textContent = val;
-        textNode.classList.add("text-right");
-
-        let messageNode = document.createElement("li");
-        messageNode.classList.add("text-right");
-        messageNode.appendChild(textNode);
-
-        message.appendChild(messageNode);
-        socket.emit("chatMessage",val)  // calls the emit function 
-        inp.value = "";
-
-        // Scroll to the bottom of the container
-        main.scrollTop = main.scrollHeight - main.clientHeight;
-    }
-
-    socket.on("chatMessage",(msg)=>{
-        appendMessage(msg);
-        main.scrollTop=main.scrollHeight-main.clientHeight;
-    });
-
-    socket.on("chatMessage",(msg)=>{  // message read receipts
-        appendMessage(msg);
-        socket.emit('messageRead',msg);
-        main.scrollTop=main.scrollHeight-main.clientHeight;
+socket.on('message', (message) => {
+    console.log(message)
+    const html = Mustache.render(messageTemplate, {
+        username: message.username,
+        message: message.text,
+        createdAt: moment(message.createdAt).format('h:mm a')
     })
+    $messages.insertAdjacentHTML('beforeend', html)
+    autoscroll()
+})
 
-    function getCurrentTime() {
-        let now = new Date();
-        let hours = now.getHours();
-        let minutes = now.getMinutes();
-        let ampm = hours >= 12 ? 'pm' : 'am';
-        hours = hours % 12;
-        hours = hours ? hours : 12; // Handle midnight (0:00)
-        minutes = minutes < 10 ? '0' + minutes : minutes;
-        let currentTime = `${hours}:${minutes}${ampm}`;
-        return currentTime;
+socket.on('locationMessage', (message) => {
+    console.log(message)
+    const html = Mustache.render(locationMessageTemplate, {
+        username: message.username,
+        url: message.url,
+        createdAt: moment(message.createdAt).format('h:mm a')
+    })
+    $messages.insertAdjacentHTML('beforeend', html)
+    autoscroll()
+})
+
+socket.on('roomData', ({ room, users }) => {
+    const html = Mustache.render(sidebarTemplate, {
+        room,
+        users
+    })
+    document.querySelector('#sidebar').innerHTML = html
+})
+
+$messageForm.addEventListener('submit', (e) => {
+    e.preventDefault()
+
+    $messageFormButton.setAttribute('disabled', 'disabled')
+
+    const message = e.target.elements.message.value
+
+    socket.emit('sendMessage', message, (error) => {
+        $messageFormButton.removeAttribute('disabled')
+        $messageFormInput.value = ''
+        $messageFormInput.focus()
+
+        if (error) {
+            return console.log(error)
+        }
+
+        console.log('Message delivered!')
+    })
+})
+
+$sendLocationButton.addEventListener('click', () => {
+    if (!navigator.geolocation) {
+        return alert('Geolocation is not supported by your browser.')
     }
-    function appendMessage(message){
-        let currentTime=getCurrentTime();
-        let messageNode=document.createElement("li");
-        messageNode.classList.add("text-right");
-        let textNode=document.createElement("span");
-        textNode.textContent=message;
-        messageNode.appendChild(textNode);
-        message.appendChild(messageNode);
+
+    $sendLocationButton.setAttribute('disabled', 'disabled')
+
+    navigator.geolocation.getCurrentPosition((position) => {
+        socket.emit('sendLocation', {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+        }, () => {
+            $sendLocationButton.removeAttribute('disabled')
+            console.log('Location shared!')  
+        })
+    })
+})
+
+socket.emit('join', { username, room }, (error) => {
+    if (error) {
+        alert(error)
+        location.href = '/'
     }
-});
+})

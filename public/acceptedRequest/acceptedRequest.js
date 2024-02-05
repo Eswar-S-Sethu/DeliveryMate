@@ -1,3 +1,4 @@
+
 document.addEventListener('DOMContentLoaded', async () => {
 
     const userAuth = localStorage.getItem('token')
@@ -76,7 +77,7 @@ function displayAcceptedRequests(acceptedRequests) {
                     <p class="card-text">Timestamp: ${new Date(request.createdAt).toLocaleString()}</p>
                     ${request.requestId.status !== 'delivered' ? `<button class="btn btn-danger" onclick="deleteAcceptedRequest('${request.requestId._id}')">Cancel Acceptance</button>
                     <button class="btn btn-warning" onclick="updateAcceptedRequest('${request.requestId._id}')"> Mark Delivered</button>` : ''}
-        
+                    <button class="btn btn-success" onclick="openChat('${request.requestId._id}')">Chat</button>
                 </div>
             </div>
         </div> `;
@@ -86,6 +87,42 @@ function displayAcceptedRequests(acceptedRequests) {
         container.appendChild(card);
     });
 }
+
+// socket part starts, don't touch this code. 
+// for getting the user info
+/*
+async function getUserInfo() {
+    const userToken = localStorage.getItem('token');
+
+    try {
+        const response = await fetch('/api/user/currentuser', {
+            headers: {
+                'Authorization': userToken,
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch user details');
+        }
+
+        const responseData = await response.json();
+        console.log(responseData)
+
+        return responseData.username;
+    }
+    catch (error) {
+        console.log("Error:".error);
+    }
+}
+*/
+
+function openChat(thereqID){
+    userName="Receiver";
+    window.location.href = `/chat?username=${userName}&room=${thereqID}`;
+}
+
+// socket part ends. 
 
 function updateUserActivityStatus(isActive) {
     const statusElement = document.getElementById("userActivityStatus");
