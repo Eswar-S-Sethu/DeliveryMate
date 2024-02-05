@@ -1,5 +1,8 @@
 # Delivery Mate
 
+![Alt Text](https://ibb.co/qWq8WFz)
+
+
 DeliveryMate is a new and independent community-sharing platform designed to 
 cultivate stronger connections among community members by facilitating the 
 shared transport of goods. As a stand-alone system, its primary goal is to enhance 
@@ -12,9 +15,9 @@ Team members: Eswar, Bidhan, Muhammad, Beata
 ## System requirements:
 
 Ensure that your system meets the following requirements before proceeding with the installation:
-- NodeJS
-- npm
-- MongoDB
+- **Node.js**: DeliveryMate is built using Node.js. You can download it from nodejs.org.
+- **npm (Node Package Manager)**: npm is used for managing project dependencies. It is included with Node.js installation.
+- **MongoDB**: DeliveryMate uses MongoDB as its database. Install and set up MongoDB by following the instructions on mongodb.com.
 
 ---
 
@@ -31,18 +34,19 @@ Ensure that your system meets the following requirements before proceeding with 
 5. Start the application:
    `npm start`
 
-The application will be accessible at http://localhost:3000.
-
 ---
 
 ## Usage:
-The application prompts you to log in first but if you don't have an account, then you can create one and log in using that.
-After logging in, you will be presented with a beautiful homepage that will have all the requests that you can accept. 
-After accepting a request, you can see it in the Accepted Requests section. You can cancel an accepted request from there. 
-You can check your account details and edit them. 
-All the requests created will be shown on the homepage along with other requests. 
+- **Homepage**: Visit http://localhost:3000 to access the homepage.
+- **Login/Registration**: Use the provided login and registration forms.
+- **Create Request**: After logging in, navigate to the "New Request" page to create a new delivery request.
+- **Request Management**: View and manage delivery requests on the "Request Management" page.
+- **Accepted Requests**: Track accepted requests on the "Accepted Requests" page.
+- **Account Management**: Manage your account details on the "Account Management" page.
 
 ---
+## Issues:
+If you encounter any issues or have suggestions, please create an issue on GitHub.
 
 ## Contributing:
 If you'd like to contribute to this repository, then please follow these steps:
