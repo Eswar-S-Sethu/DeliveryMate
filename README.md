@@ -7,12 +7,16 @@ the overall quality of community life.
 
 Team members: Eswar, Bidhan, Muhammad, Beata
 
+---
+
 ## System requirements:
 
 Ensure that your system meets the following requirements before proceeding with the installation:
 - NodeJS
 - npm
 - MongoDB
+
+---
 
 ## Installation:
 
@@ -29,12 +33,16 @@ Ensure that your system meets the following requirements before proceeding with 
 
 The application will be accessible at http://localhost:3000.
 
+---
+
 ## Usage:
 The application prompts you to log in first but if you don't have an account, then you can create one and log in using that.
 After logging in, you will be presented with a beautiful homepage that will have all the requests that you can accept. 
 After accepting a request, you can see it in the Accepted Requests section. You can cancel an accepted request from there. 
 You can check your account details and edit them. 
 All the requests created will be shown on the homepage along with other requests. 
+
+---
 
 ## Contributing:
 If you'd like to contribute to this repository, then please follow these steps:
