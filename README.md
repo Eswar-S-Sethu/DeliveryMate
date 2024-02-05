@@ -1,6 +1,6 @@
 # Delivery Mate
 
-![Alt Text](https://ibb.co/qWq8WFz)
+![DeliveryMate](https://i.ibb.co/gPq8PFG/logo.png)
 
 
 DeliveryMate is a new and independent community-sharing platform designed to 
