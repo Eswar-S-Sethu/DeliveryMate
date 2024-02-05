@@ -13,7 +13,7 @@
 
 
 /*Submit button*/
-.btn{
+.subbtn{
 	display: block;
 	width: 100%;
 	height: 50px;
@@ -31,6 +31,10 @@
 	transition: .5s;
 }
 
-.btn:hover{
+.subbtn:hover{
 	background-position: right;
+}
+
+.ctbox{
+	margin-top: 80px; 
 }

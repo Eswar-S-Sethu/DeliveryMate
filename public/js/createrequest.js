@@ -1,12 +1,12 @@
 
-// lock navbar
-$(document).scroll(function () {
-    if ($(this).scrollTop() > 550) {
-        $('header').addClass('scrolled');
-    } else {
-        $('header').removeClass('scrolled');
-    }
-});
+// // lock navbar
+// $(document).scroll(function () {
+//     if ($(this).scrollTop() > 550) {
+//         $('header').addClass('scrolled');
+//     } else {
+//         $('header').removeClass('scrolled');
+//     }
+// });
 
 //login and signup font effects
 const inputs = document.querySelectorAll(".input");
@@ -36,12 +36,18 @@ function displaySubmissionTime(time) {
     }
 }
 // Function called when the form is submitted
-function submitForm() {
+async function submitForm(event) {
+    event.preventDefault();
+
     var itemName = document.getElementById('inputName').value;
     var itemWeight = document.getElementById('inputWeight').value;
     var itemSize = document.getElementById('inputSize').value;
-    var itemDestination = document.getElementById('inputDestination').value;
-    var itemPickup = document.getElementById('inputpickup').value;
+    var itemDestination = document.getElementById('itemDestination').value;
+    var itemDestinationLatitude = document.getElementById('itemDestinationLatitude').value;
+    var itemDestinationLongitude = document.getElementById('itemDestinationLongitude').value;
+    var itemPickup = document.getElementById('itemPickup').value;
+    var itemPickupLatitude = document.getElementById('itemPickupLatitude').value;
+    var itemPickupLongitude = document.getElementById('itemPickupLongitude').value;
     var itemTips = document.getElementById('inputtips').value;
     var itemNotes = document.getElementById('inputnotes').value;
  // Validate form inputs
@@ -67,7 +73,11 @@ function submitForm() {
     formData.append('itemWeight', itemWeight);
     formData.append('itemSize', itemSize);
     formData.append('itemDestination', itemDestination);
+    formData.append('itemDestinationLatitude', itemDestinationLatitude);
+    formData.append('itemDestinationLongitude', itemDestinationLongitude);
     formData.append('itemPickup', itemPickup);
+    formData.append('itemPickupLatitude', itemPickupLatitude);
+    formData.append('itemPickupLongitude', itemPickupLongitude);
     formData.append('itemTips', itemTips);
     formData.append('itemNotes', itemNotes);
 
@@ -123,3 +133,97 @@ function resetImagePreview() {
     fileInput.value = null;
     previewImage.src = '';
 }
+// Initialize Leaflet map
+var map = L.map('map').setView([51.505, -0.09], 13);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap contributors'
+}).addTo(map);
+var selectedInputField;
+
+// Function to open the map and set the selected input field
+function openMap(inputField) {
+    selectedInputField = inputField;
+
+    // Check if the Geolocation API is available
+    if (navigator.geolocation) {
+        // Use Geolocation API to get the current location
+        navigator.geolocation.getCurrentPosition(
+            function (position) {
+                var userLat = position.coords.latitude;
+                var userLng = position.coords.longitude;
+
+                // Center the map at the user's current location
+                map.setView([userLat, userLng], 13);
+
+                // Optionally, you can add a marker at the user's location
+                L.marker([userLat, userLng]).addTo(map);
+
+                // Show the modal
+                $('#mapModal').modal('show');
+            },
+            function (error) {
+                console.error('Error getting user location:', error);
+                // If there is an error, still show the modal without centering on the user's location
+                $('#mapModal').modal('show');
+            }
+        );
+    } else {
+        console.error('Geolocation is not supported by your browser');
+        // If Geolocation is not supported, still show the modal without centering on the user's location
+        $('#mapModal').modal('show');
+    }
+}
+
+// Event listener for map click
+map.on('click', function (e) {
+    var lat = e.latlng.lat;
+    var lng = e.latlng.lng;
+
+    // Reverse geocode to get the location name
+    reverseGeocode(lat, lng, selectedInputField);
+});
+
+
+// Function to reverse geocode and update the input field
+function reverseGeocode(lat, lng, inputField) {
+    var geocodeUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`;
+
+    $.ajax({
+        url: geocodeUrl,
+        type: 'GET',
+        success: function (response) {
+            // Extract the location name from the response
+            var locationName = response.display_name;
+
+            // Update the input field with the location name
+            $('#' + inputField).val(locationName);
+
+            // Extract and update separate latitude and longitude fields if needed
+            var latitudeField = $('#' + inputField + 'Latitude');
+            var longitudeField = $('#' + inputField + 'Longitude');
+
+            // Update latitude and longitude fields
+            if (latitudeField.length && longitudeField.length) {
+                latitudeField.val(lat);
+                longitudeField.val(lng);
+            }
+
+            // hide the modal
+            hideMapModal()
+        },
+        error: function (error) {
+            console.error('Error reverse geocoding:', error);
+            // If there is an error, still show the modal without updating the input field
+            $('#mapModal').modal('show');
+        }
+    });
+}
+
+// Function to hide the map modal
+function hideMapModal() {
+    $('#mapModal').modal('hide');
+}
+
+// Attach the submitForm function to the form's submit event
+document.getElementById('deliveryRequestForm').addEventListener('submit', submitForm);
