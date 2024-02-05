@@ -31,18 +31,19 @@ const submitRequest = async (req, res, next) => {
         return res.status(404).json({ message: 'Request not found' });
       }
 
-      existingRequest.itemName = itemName;
-      existingRequest.itemWeight = itemWeight;
-      existingRequest.itemSize = itemSize;
-      existingRequest.itemDestination.name = itemDestination;
-      existingRequest.itemPickup.name = itemPickup;
-      existingRequest.itemPickup.latitude = itemPickupLatitude;
-      existingRequest.itemPickup.longitude = itemPickupLongitude;
-      existingRequest.itemDestination.latitude = itemDestinationLatitude;
-      existingRequest.itemDestination.longitude = itemDestinationLongitude;
-      existingRequest.itemTips = itemTips;
-      existingRequest.itemNotes = itemNotes;
-      existingRequest.itemImage = itemImage;
+      // Check if each field has a value and update only those that are present
+      if (itemName) existingRequest.itemName = itemName;
+      if (itemWeight) existingRequest.itemWeight = itemWeight;
+      if (itemSize) existingRequest.itemSize = itemSize;
+      if (itemDestination) existingRequest.itemDestination.name = itemDestination;
+      if (itemPickup) existingRequest.itemPickup.name = itemPickup;
+      if (itemPickupLatitude) existingRequest.itemPickup.latitude = itemPickupLatitude;
+      if (itemPickupLongitude) existingRequest.itemPickup.longitude = itemPickupLongitude;
+      if (itemDestinationLatitude) existingRequest.itemDestination.latitude = itemDestinationLatitude;
+      if (itemDestinationLongitude) existingRequest.itemDestination.longitude = itemDestinationLongitude;
+      if (itemTips) existingRequest.itemTips = itemTips;
+      if (itemNotes) existingRequest.itemNotes = itemNotes;
+      if (itemImage) existingRequest.itemImage = itemImage;
 
       await existingRequest.save();
 

@@ -44,8 +44,7 @@ function createRequestCards() {
             </div>
             <div class="col-md-8">
                 <div class="card-body">
-                    <h5 class="card-title">Request #${request._id}</h5>
-                    <p class="card-text">Item Name: ${request.itemName}</p>
+                    <h5 class="card-title">Requested Item Name: ${request.itemName}</h5>
                     <p class="card-text">Weight: ${request.itemWeight}</p>
                     <p class="card-text">Size: ${request.itemSize}</p>
                     <p class="card-text">Destination: ${request.itemDestination.name}</p>
@@ -54,9 +53,9 @@ function createRequestCards() {
                     <p class="card-text">Tips: ${request.itemTips}</p>
                     <p class="card-text">Status: ${request.status}</p>
                     <div class="d-flex">
-                        <button class="btn btn-success me-2" data-toggle="modal" data-target="#editModal${request._id}">Edit</button>
-                        <button onclick="deleteRequest('${request._id}')" class="btn btn-danger">Delete</button>
-                        <button onclick="goToChat('${request._id}')" class="btn btn-primary">Go to Chat</button>
+                        <button class="btn btn-success mr-2" data-toggle="modal" data-target="#editModal${request._id}">Edit</button>
+                        <button onclick="deleteRequest('${request._id}')" class="btn btn-danger  mr-2">Delete</button>
+                        ${(request.status == 'accepted' || request.status == 'delivered') ? `<button onclick="goToChat('${request._id}')" class="btn btn-primary">Go to Chat</button>` : ''}
                     </div>
                 </div>
             </div>
@@ -65,7 +64,7 @@ function createRequestCards() {
 
         card.innerHTML = cardContent;
 
-        console.log("REQUEST ID:",request._id);
+        console.log("REQUEST ID:", request._id);
 
         // Append card to container
         container.appendChild(card);
@@ -84,13 +83,13 @@ function createEditModal(request) {
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="editModalLabel">Edit Request #${request._id}</h5>
+                        <h5 class="modal-title" id="editModalLabel">Edit Request</h5>
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
                     <div class="modal-body">
-                    <form >
+                    <form id="editform${request._id}">
                         <div class="form-group">
                             <label for="editItemName">Item Name:</label>
                             <input type="text" id="editItemName${request._id}" class="form-control" value="${request.itemName}">
@@ -129,8 +128,8 @@ function createEditModal(request) {
                             <label for="editImageUrl">Image URL:</label>
                             <input type="file" id="editImageUrl${request._id}" class="form-control" >
                         </div>
-                        <button class="btn btn-primary" type="button" >Save Changes</button>
-                        </form onclick="saveChanges(${request._id})">
+                        <button class="btn btn-primary save-changes-button" type="button" >Save Changes</button>
+                        </form >
                     </div>
                 </div>
             </div>
@@ -141,8 +140,8 @@ function createEditModal(request) {
 }
 
 
-async function goToChat(thereqID){
-    userName="Sender";
+async function goToChat(thereqID) {
+    userName = "Sender";
     window.location.href = `/chat?username=${userName}&room=${thereqID}`;
 }
 
@@ -180,11 +179,12 @@ async function updatePageWithUserRequests() {
     }
 }
 function saveChanges(requestId) {
+    debugger
     const editItemName = document.getElementById(`editItemName${requestId}`).value;
     const editWeight = document.getElementById(`editWeight${requestId}`).value;
     const editSize = document.getElementById(`editSize${requestId}`).value;
     const editDestination = document.getElementById(`editDestination${requestId}`).value;
-    const editPickup = document.getElementById(`editPickup${requestId}`).value;
+    const editPickup = document.getElementById(`editPickUp${requestId}`).value;
     const editNotes = document.getElementById(`editNotes${requestId}`).value;
     const editTips = document.getElementById(`editTips${requestId}`).value;
 
@@ -216,13 +216,16 @@ function saveChanges(requestId) {
         success: function (response) {
             toastr.success(response.message);
             // Reset the form after success
-            resetImagePreview();
-
             // Close the modal
             $(`#editModal${requestId}`).modal('hide');
 
             // Update the page with the new data
             updatePageWithUserRequests();
+
+            const form = modal.querySelector(`editform${requestId}>`);
+
+            // Reset the form
+            form.reset();
         },
         error: function (error) {
             toastr.error("Failed to submit request.");
@@ -305,3 +308,17 @@ function openMap(inputField) {
     }
 }
 
+
+// // Add an event listener for the "Save Changes" button click using event delegation
+document.body.addEventListener('click', function (event) {
+    if (event.target.classList.contains('save-changes-button')) {
+        // Find the closest parent with the 'modal' class
+        const modal = event.target.closest('.modal');
+
+        // Ensure that a modal was found
+        if (modal) {
+            const requestId = modal.id.replace('editModal', ''); // Extract requestId from modal id
+            saveChanges(requestId);
+        }
+    }
+});

@@ -91,8 +91,18 @@ const getAllAcceptedRequests = async (req, res, next) => {
 
         // Get all accepted requests for the current user and populate user and request details
         const acceptedRequests = await AcceptedRequest.find({ acceptingUserId })
-            .populate('acceptingUserId', 'username email') // Add user fields you want to populate
-            .populate('requestId', 'itemName itemWeight itemSize itemDestination itemPickup itemTips itemNotes itemImage submissionTime userId status'); // Add request fields you want to populate
+            .populate({
+                path: 'acceptingUserId',
+                select: 'username email',
+            })
+            .populate({
+                path: 'requestId',
+                select: 'itemName itemWeight itemSize itemDestination itemPickup itemTips itemNotes itemImage submissionTime  status',
+                populate: {
+                    path: 'userId',
+                    select: 'firstname lastname username email', // Add user fields you want to populate for the userId field
+                },
+            });
 
         res.json({ acceptedRequests });
     } catch (error) {

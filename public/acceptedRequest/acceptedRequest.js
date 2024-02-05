@@ -62,19 +62,17 @@ function displayAcceptedRequests(acceptedRequests) {
                     <img src="${request.requestId.itemImage}" alt="Item Image" class="card-img-top">
                 </div>
                 <div class="col-md-8">
-                    <h5 class="card-title">Accepted Request #${request._id}</h5>
-                    <p class="card-text">Item Name: ${request.requestId.itemName}</p>
+                    <h5 class="card-title">Accepted Request for  "${request.requestId.itemName}" </h5>
+                    <p class="card-text">Requested By: ${request.requestId.userId.firstname}</p>
+                    <p class="card-text">Requested User Email: ${request.requestId.userId.email}</p>
+                    <p class="card-text">Item Pick-Up: ${request.requestId.itemPickup.name}</p>
+                    <p class="card-text">Item Destination: ${request.requestId.itemDestination.name}</p>
                     <p class="card-text">Item Weight: ${request.requestId.itemWeight}</p>
                     <p class="card-text">Item Size: ${request.requestId.itemSize}</p>
-                    <p class="card-text">Item Destination: ${request.requestId.itemDestination.name}</p>
-                    <p class="card-text">Item Pick-Up: ${request.requestId.itemPickup.name}</p>
                     <p class="card-text">Item Tips: ${request.requestId.itemTips}</p>
                     <p class="card-text">Item Notes: ${request.requestId.itemNotes}</p>
-                    <p class="card-text">Submission Time: ${new Date(request.requestId.submissionTime).toLocaleString()}</p>
-                    <p class="card-text">Accepted By: ${request.acceptingUserId.username}</p>
-                    <p class="card-text">Accepted User Email: ${request.acceptingUserId.email}</p>
                     <p class="card-text">Status: ${request.requestId.status}</p>
-                    <p class="card-text">Timestamp: ${new Date(request.createdAt).toLocaleString()}</p>
+                    <p class="card-text">Requested At: ${new Date(request.createdAt).toDateString()}</p>
                     ${request.requestId.status !== 'delivered' ? `<button class="btn btn-danger" onclick="deleteAcceptedRequest('${request.requestId._id}')">Cancel Acceptance</button>
                     <button class="btn btn-warning" onclick="updateAcceptedRequest('${request.requestId._id}')"> Mark Delivered</button>` : ''}
                     <button class="btn btn-success" onclick="openChat('${request.requestId._id}')">Chat</button>
