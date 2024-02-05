@@ -15,12 +15,32 @@ const deliveryRequestSchema = new mongoose.Schema({
         required: true,
     },
     itemDestination: {
-        type: String,
-        required: true,
+        name: {
+            type: String,
+            required: true,
+        },
+        latitude: {
+            type: Number,
+            required: true,
+        },
+        longitude: {
+            type: Number,
+            required: true,
+        },
     },
     itemPickup: {
-        type: String,
-        required: true,
+        name: {
+            type: String,
+            required: true,
+        },
+        latitude: {
+            type: Number,
+            required: true,
+        },
+        longitude: {
+            type: Number,
+            required: true,
+        },
     },
     itemTips: {
         type: String,
@@ -42,6 +62,11 @@ const deliveryRequestSchema = new mongoose.Schema({
         type: Schema.Types.ObjectId,
         ref: 'User',
         required: true
+    },
+    status: {
+        type: String,
+        enum: ['pending', 'accepted', 'delivered'],
+        default: 'pending',
     },
 }, { timestamps: true });
 

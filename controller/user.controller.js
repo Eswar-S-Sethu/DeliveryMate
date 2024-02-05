@@ -123,7 +123,7 @@ const transporter = nodemailer.createTransport({
     secure: true, // Use SSL
     auth: {
         user: 'apikey',
-        pass: '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',
+        pass: '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',
     },
 });
 // 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

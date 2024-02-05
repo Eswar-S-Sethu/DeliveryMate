@@ -1,5 +1,6 @@
 
 let requestList=[]
+const userToken = localStorage.getItem('token')
 // Function to fetch all requests by the current user
 async function getAllRequestsByCurrentUser() {
     try {
@@ -45,10 +46,11 @@ function createRequestCards() {
                     <p class="card-text">Item Name: ${request.itemName}</p>
                     <p class="card-text">Weight: ${request.itemWeight}</p>
                     <p class="card-text">Size: ${request.itemSize}</p>
-                    <p class="card-text">Destination: ${request.itemDestination}</p>
-                    <p class="card-text">Pick-up: ${request.itemPickup}</p>
+                    <p class="card-text">Destination: ${request.itemDestination.name}</p>
+                    <p class="card-text">Pick-up: ${request.itemPickup.name}</p>
                     <p class="card-text">Notes: ${request.itemNotes}</p>
                     <p class="card-text">Tips: ${request.itemTips}</p>
+                    <p class="card-text">Status: ${request.status}</p>
                     <div class="d-flex">
                         <button class="btn btn-success me-2" data-toggle="modal" data-target="#editModal${request._id}">Edit</button>
                         <button onclick="deleteRequest('${request._id}')" class="btn btn-danger">Delete</button>
@@ -146,7 +148,10 @@ async function updatePageWithUserRequests() {
             // Create new cards based on user-specific requests
             createRequestCards();
         } else {
+            createRequestCards();
             alert('No requests found for the current user.');
+
+
         }
     } catch (error) {
         console.error(error);

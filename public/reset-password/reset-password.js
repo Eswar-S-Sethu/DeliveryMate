@@ -52,17 +52,22 @@ $(document).ready(function () {
         // Send a request to your server to reset the password
         $.ajax({
             type: "POST",
+            contentType: 'application/json; charset=utf-8',
             url: "/api/user/change-password", // Replace with your API endpoint
-            data: {
+            data: JSON.stringify( {
                 newPassword: password,
                 forgot: true
                 // Add any additional data needed for reset password API
-            },
+            }),
             headers: {
-                'Authorization': token,
+                'authorization': token,
             },
             success: function (response) {
                 toastr.success(response.message);
+                setInterval(()=>{
+                    window.location.href = '/';
+
+                },5000)
                 // Redirect or perform additional actions on success
             },
             error: function (error) {

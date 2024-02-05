@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            const response = await fetch('/api/user/change-password', {
+            const response = await fetch('/api/user/forget-password', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -56,6 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (response.ok) {
                 // Password reset link sent successfully
                 toastr.success(data.message);
+                $("#forgetPassword").trigger("reset");
             } else {
                 // Error message from the server
                 toastr.error(data.message);
