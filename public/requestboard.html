@@ -17,81 +17,81 @@
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top"
-    style="background-image: linear-gradient(to right, #BBFFBB, #a8d46f, #32be8f); display: flex; justify-content: space-between; margin-bottom: 20px;">
-    <div class="container">
-        <a class="navbar-brand" href="#">DeliveryMate</a>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-                <!-- Notification icon added here -->
-                <li class="nav-item active">
-                    <a class="nav-link" href="#" class="current">
-                        <i class="fas fa-bell"></i> <!-- Font Awesome bell icon -->
-                    </a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="/home">Home <span class="sr-only">(current)</span></a>
-                    <!-- a visually hidden span element used for screen reader accessibility -->
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/new-request">New Request</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/request-management">Request Management</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/accepted-request">Accepted Request</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/account-management">Account Management</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="/">Login</a>
-                </li>
-            </ul>
-        </div>
+        style="background-image: linear-gradient(to right, #BBFFBB, #a8d46f, #32be8f); display: flex; justify-content: space-between; margin-bottom: 20px;">
+        <div class="container">
+            <a class="navbar-brand" href="#">DeliveryMate</a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ml-auto">
+                    <!-- Notification icon added here -->
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/notification" class="current">
+                            <i class="fas fa-bell"></i> <!-- Font Awesome bell icon -->
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="/home">Home <span class="sr-only">(current)</span></a>
+                        <!-- a visually hidden span element used for screen reader accessibility -->
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/new-request">New Request</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/request-management">Request Management</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/accepted-request">Accepted Request</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/account-management">Account Management</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Login</a>
+                    </li>
+                </ul>
+            </div>
     </nav>
 
-<br><br>
+    <br><br>
 
     <div class="request-box text-center mt-4">
         <div class="request-title">
             <h2>Requests Board</h2>
             <p>Please review and accept requests from the board to lend your assistance.</p>
-<br><br>    <div class="request-box mx-auto text-center">
-        <h2>Requests Board</h2>
-        <p class="mt-2">Please review and accept requests from the board to lend your assistance.</p>
-    </div>
+        </div>
+        <br><br>
 
 
-    <div class="container">
-        <div class="row justify-content-center mt-3 mb-3">
-            <div class="col-md-9">
-                <div class="input-group">
-                    <input type="text" class="form-control custom-border mt-3 mb-3" placeholder="Search..." id="searchInput">
-                    <div class="input-group-append">
-                        <button class="schbtn custom-btn ml-2 mr-2" type="button" id="searchButton">Search</button>
-                        <button class="clearbtn" type="button" id="showAllButton">Show All Requests</button>
+
+        <div class="container">
+            <div class="row justify-content-center mt-3 mb-3">
+                <div class="col-md-9">
+                    <div class="input-group">
+                        <input type="text" class="form-control custom-border mt-3 mb-3" placeholder="Search..."
+                            id="searchInput">
+                        <div class="input-group-append">
+                            <button class="schbtn custom-btn ml-2 mr-2" type="button" id="searchButton">Search</button>
+                            <button class="clearbtn" type="button" id="showAllButton">Show All Requests</button>
+                        </div>
                     </div>
                 </div>
             </div>
+
+
+
         </div>
 
 
-
-    </div>
-
-
-    <section class="container">
-        <section class="card-container" id="cardContainer">
-            <!-- JavaScript will populate cards here -->
+        <section class="container">
+            <section class="card-container" id="cardContainer">
+                <!-- JavaScript will populate cards here -->
+            </section>
         </section>
-    </section>
 
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    <script src="/js/deliveryRequest.js"></script>
-    <script src="/js/userDetailsFetch.js"></script>
+</div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+        <script src="/js/deliveryRequest.js"></script>
+        <script src="/js/userDetailsFetch.js"></script>
 
 </body>
 

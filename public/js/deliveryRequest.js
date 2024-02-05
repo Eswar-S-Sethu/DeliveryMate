@@ -35,47 +35,27 @@ function acceptRequest(requestId) {
 }
 
 // Fetch all delivery requests from the API with token in headers
-fetch('/api/delivery/getAllRequests', {
-    method: 'GET',
-    headers: {
-        'Authorization': userToken,
-        'Content-Type': 'application/json'
-    }
-})
-    .then(response => response.json())
-    .then(data => {
-        // Loop through the fetched data and generate cards
-        data.requests.forEach(function (request) {
-            // Create card element
-            var cardElement = document.createElement("div");
-            cardElement.classList.add("col-md-3");
-            cardElement.id = `card_${request._id}`;
-            cardElement.innerHTML = `
-            <div class="card h-100">
-                <img src="http://localhost:3000/${request.itemImage}" alt="request" class="image">
-                <div class="card-body">
-                    <ul style="list-style-type:none; text-align:left; padding: 0;">
-                        <li><strong>Item Name:</strong>${request.itemName}</li>
-                        <li><strong>Weight:</strong>${request.itemWeight}</li>
-                        <li><strong>Size:</strong>${request.itemSize}</li>
-                        <li><strong>Destination:</strong>${request.itemDestination}</li>
-                        <li><strong>Pick-Up Point:</strong>${request.itemPickup}</li>
-                        <li><strong>Tips:</strong>${request.itemTips}</li>
-                        <li><strong>Notes:</strong>${request.itemNotes}</li>
-                    </ul>
-                </div>
-                <div class="d-flex justify-content-center align-items-center">
-                    <button type="button" class="btn" onclick="acceptRequest('${request._id}')">Accept request</button>
-                </div>
-            </div>
-        `;
-            // Append card to the card container
-            cardContainer.appendChild(cardElement);
-        });
+function fetchAllData(lat = null, long = null) {
+    fetch(lat && long ? `/api/delivery/getAllRequests?latitude=${lat}&longitude=${long}` : `/api/delivery/getAllRequests`, {
+        method: 'GET',
+        headers: {
+            'Authorization': userToken,
+            'Content-Type': 'application/json'
+        }
     })
-    .catch(error => {
-        console.error('Error fetching delivery requests:', error);
-    });
+        .then(response => response.json())
+        .then(data => {
+            // Loop through the fetched data and generate cards
+            data.requests.forEach(function (request) {
+                generateCard(request);
+
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching delivery requests:', error);
+        });
+}
+
 
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -120,8 +100,8 @@ function fetchAndPopulateCards(searchKeyword = '') {
                 const filteredRequests = data.requests.filter(request =>
                     Object.values(request).some(value =>
                         typeof value === 'string' && value.toLowerCase().includes(searchKeyword.toLowerCase())
-                        )
-                    );
+                    )
+                );
                 filteredRequests.forEach(request => {
                     generateCard(request);
                 });
@@ -147,8 +127,8 @@ function generateCard(request) {
                 <li><strong>Item Name:</strong>${request.itemName}</li>
                 <li><strong>Weight:</strong>${request.itemWeight}</li>
                 <li><strong>Size:</strong>${request.itemSize}</li>
-                <li><strong>Destination:</strong>${request.itemDestination}</li>
-                <li><strong>Pick-Up Point:</strong>${request.itemPickup}</li>
+                <li><strong>Destination:</strong>${request.itemDestination.name}</li>
+                <li><strong>Pick-Up Point:</strong>${request.itemPickup.name}</li>
                 <li><strong>Tips:</strong>${request.itemTips}</li>
                 <li><strong>Notes:</strong>${request.itemNotes}</li>
             </ul>
@@ -161,3 +141,6 @@ function generateCard(request) {
     // Append card to the card container
     cardContainer.appendChild(cardElement);
 }
+
+
+fetchAllData()
