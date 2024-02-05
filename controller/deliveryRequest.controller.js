@@ -87,7 +87,7 @@ const submitRequest = async (req, res, next) => {
 const getAllRequests = async (req, res, next) => {
   try {
     const userId = req.user.id;
-    const requests = await DeliveryRequest.find({ userId: { $ne: userId }, status: 'pending' });
+    const requests = await DeliveryRequest.find({ status: 'pending' });
     res.json({ requests });
   } catch (error) {
     console.error(error);
@@ -156,8 +156,8 @@ const updateDeliveryStatus = async (req, res, next) => {
       message: `Your delivery for item ${changeStatusRequest.itemName} is marked delivered by ${loggedUserDetails.firstname} ${loggedUserDetails.lastname}`,
       url: '',
       userId: changeStatusRequest.userId
-  })
-  await newNotificationRequest.save();
+    })
+    await newNotificationRequest.save();
     return res.status(200).json({ message: 'Request Updated Status successfully' });
   } catch (error) {
     console.error(error);

@@ -11,6 +11,9 @@ const createAcceptedRequest = async (req, res, next) => {
         const loggedUserDetails = await User.findById(acceptingUserId)
         // Check if the request with the given ID exists
         const existingRequest = await DeliveryRequest.findById(requestId);
+        if (existingRequest.userId == acceptingUserId) {
+            return res.status(404).json({ message: 'Cannot accept your own request' });
+        }
         if (!existingRequest) {
             return res.status(404).json({ message: 'Request not found' });
         }
