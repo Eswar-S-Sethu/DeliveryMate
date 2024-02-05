@@ -1,12 +1,12 @@
 
-// lock navbar
-$(document).scroll(function () {
-    if ($(this).scrollTop() > 550) {
-        $('header').addClass('scrolled');
-    } else {
-        $('header').removeClass('scrolled');
-    }
-});
+// // lock navbar
+// $(document).scroll(function () {
+//     if ($(this).scrollTop() > 550) {
+//         $('header').addClass('scrolled');
+//     } else {
+//         $('header').removeClass('scrolled');
+//     }
+// });
 
 //login and signup font effects
 const inputs = document.querySelectorAll(".input");
@@ -77,3 +77,5 @@ form.addEventListener("submit", (event) => {
     event.preventDefault();
     sendData();
 });
+
+
