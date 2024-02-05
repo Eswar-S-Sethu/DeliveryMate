@@ -21,15 +21,15 @@ Ensure that your system meets the following requirements before proceeding with 
 ## Installation:
 
 1. Clone this repository
-   ' git clone https://github.com/Eswar-S-Sethu/DeliveryMate '
+   `git clone https://github.com/Eswar-S-Sethu/DeliveryMate`
 2. Change into the project directory:
-   ' cd DeliveryMate '
+   `cd DeliveryMate`
 3. Install dependencies:
-   ' npm install '
+   `npm install`
 4. Configure the environment variables:
    Create a .env file in the root directory and add the necessary environment variables.
 5. Start the application:
-   ' npm start '
+   `npm start`
 
 The application will be accessible at http://localhost:3000.
 
@@ -49,10 +49,10 @@ If you'd like to contribute to this repository, then please follow these steps:
 
 1. Fork this repository
 2. Create a new branch
-   'git checkout -b feature/your-feature'
+   `git checkout -b feature/your-feature`
 3. Make your changes and commit them.
-   'git commit -m 'Add some feature'
+   `git commit -m Add some feature`
 4. Push to the feature branch.
-   'git push origin feature/your-feature'
+   `git push origin feature/your-feature`
 5. Create a pull request.
 
