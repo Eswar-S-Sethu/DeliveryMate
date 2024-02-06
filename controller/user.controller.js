@@ -141,7 +141,7 @@ const requestPasswordReset = async (req, res, next) => {
         // Send email with reset link
         const resetLink = `http://localhost:3000/reset-password/?token=${resetToken}`;
         const mailOptions = {
-            from: 'bidhanbabu69@gmail.com',
+            from: 'eswarssethu2002@gmail.com',
             to: email,
             subject: 'Password Reset Request',
             html: `Click the following link to reset your password:<a href='${resetLink}'>Click Here <a/>`

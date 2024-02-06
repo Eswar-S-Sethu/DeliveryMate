@@ -173,6 +173,28 @@ const updateDeliveryStatus = async (req, res, next) => {
   }
 };
 
-// Rest of your code...
+const getRequestById = async (req, res, next) => {
+  try {
+    const requestId = req.params.id;
 
-module.exports = { submitRequest, getAllRequests, getAllRequestsByUserId, deleteRequestById, updateDeliveryStatus };
+    // Validate if the request ID is provided
+    if (!requestId) {
+      return res.status(400).json({ message: 'Request ID is required' });
+    }
+
+    // Find the request by ID
+    const request = await DeliveryRequest.findById(requestId).populate('userId', 'firstname lastname email');
+
+    // Check if the request was found
+    if (!request) {
+      return res.status(404).json({ message: 'Request not found' });
+    }
+
+    return res.status(200).json({ request });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Internal Server Error', message: error.message });
+  }
+};
+
+module.exports = { submitRequest, getAllRequests, getAllRequestsByUserId, deleteRequestById, updateDeliveryStatus,getRequestById };

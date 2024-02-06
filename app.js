@@ -142,6 +142,9 @@ app.use(express.urlencoded({ extended: false }));
 app.get('/request-management', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', '/requestManagement/requestManagement.html'));
 });
+app.get('/request-management/:id', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', '/requestById/requestById.html'));
+});
 app.get('/account-management', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', '/accountManagement/accountManagement.html'));
 });

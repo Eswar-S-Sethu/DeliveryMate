@@ -2,7 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const fs = require('fs');
 const router = express.Router();
-const { submitRequest,getAllRequestsByUserId,getAllRequests,deleteRequestById,updateDeliveryStatus } = require('../controller/deliveryRequest.controller');
+const { submitRequest,getAllRequestsByUserId,getAllRequests,deleteRequestById,updateDeliveryStatus,getRequestById } = require('../controller/deliveryRequest.controller');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -27,6 +27,8 @@ router.get('/getAllRequests', getAllRequests);
 router.get('/getAllRequestsByUser', getAllRequestsByUserId);
 router.delete('/deleteRequest/:id', deleteRequestById);
 router.put('/updateRequestDelivered/:id', updateDeliveryStatus);
+router.get('/getById/:id', getRequestById);
+
 
 
 

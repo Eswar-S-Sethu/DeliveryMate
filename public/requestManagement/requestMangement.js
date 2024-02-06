@@ -44,7 +44,7 @@ function createRequestCards() {
             </div>
             <div class="col-md-8">
                 <div class="card-body">
-                    <h5 class="card-title">Requested Item Name: ${request.itemName}</h5>
+                    <h5 class="card-title"><a href="/request-management/${request._id}">Requested Item Name: ${request.itemName}</a></h5>
                     <p class="card-text">Weight: ${request.itemWeight}</p>
                     <p class="card-text">Size: ${request.itemSize}</p>
                     <p class="card-text">Destination: ${request.itemDestination.name}</p>
