@@ -60,3 +60,7 @@ If you'd like to contribute to this repository, then please follow these steps:
    `git push origin feature/your-feature`
 5. Create a pull request.
 
+## How to pull docker container
+If you would like to run this project on your docker . Just pull docker image using command
+docker pull bids4u/deliverymate 
+
