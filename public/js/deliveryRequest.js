@@ -110,7 +110,7 @@ function generateCard(request) {
         <img src="http://localhost:3000/${request.itemImage}" alt="request" class="image">
         <div class="card-body">
             <ul style="list-style-type:none; text-align:left; padding: 0;">
-                <li><strong>Item Name:</strong>${request.itemName}</li>
+                <li><strong>Item Name:</strong><a href="/request-management/${request._id}">${request.itemName}</a></li>
                 <li><strong>Weight:</strong>${request.itemWeight}</li>
                 <li><strong>Size:</strong>${request.itemSize}</li>
                 <li><strong>Destination:</strong>${request.itemDestination.name}</li>
