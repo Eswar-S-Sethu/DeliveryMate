@@ -1,9 +1,7 @@
 const User = require("../model/user.model")
 const generateAccessToken = require("../utils/generateToken")
 const bcrypt = require("bcrypt")
-const crypto = require('crypto');
 const nodemailer = require('nodemailer');
-const sgMail = require('@sendgrid/mail')
 const dotenv = require('dotenv');
 
 
